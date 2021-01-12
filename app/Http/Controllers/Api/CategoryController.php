@@ -10,7 +10,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        //
+        return Category::all();
     }
 
     public function store(Request $request)
@@ -18,9 +18,9 @@ class CategoryController extends Controller
         //
     }
 
-    public function show(Category $category)
+    public function show(Category $category) //Routing Binding
     {
-        //
+        return $category;
     }
 
     public function update(Request $request, Category $category)
