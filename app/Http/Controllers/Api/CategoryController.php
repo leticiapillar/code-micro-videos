@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -13,13 +14,13 @@ class CategoryController extends Controller
         return Category::all();
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        // Validação dos campos recebidos pela request
-        $this->validate($request, [
-            'name' => 'required|max:255',
-            'is_active' => 'boolean'
-        ]);
+        // Validação na controller: Validação dos campos recebidos pela request 
+        // $this->validate($request, [
+        //     'name' => 'required|max:255',
+        //     'is_active' => 'boolean'
+        // ]);
         return Category::create($request->all());
     }
 
