@@ -61,3 +61,14 @@ $ php artisan migrate:refresh --seed
 # Apaga todo o banco, e executa as migrações
 $ php artisan migrate:fresh --seed
 ```
+
+- Listando as rotas das Controllers
+Este comando ajuda a verificar se as rotas estão corretas após alterar as controllers.
+```bash
+# Lista a estrutura de rotas dos recursos
+$ php artisan route:list
+```
+
+### Ferramentas para testas as rotas da API
+- [Postman](https://www.postman.com/)
+- [Insomnia Rest](https://insomnia.rest/)
