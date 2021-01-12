@@ -1,25 +1,63 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="http://maratona.fullcycle.com.br/public/img/logo-maratona.png"/></a>
-</p>
+# Curso: Desenvolvimento de Aplicações Modernas e Escaláveis com Microsserviços
 
-## Descrição
+by [Code.education](https://code.education/)
 
-Microsserviço de catálogo
 
-## Rodar a aplicação
+## Módulo: Microsserviço: Catálogo de vídeos com Laravel ( Back-end )
 
-#### Crie os containers com Docker
+- Microsserviço de catálogo
+
+### Rodar a aplicação
+- Crie os containers com Docker
 
 ```bash
+# Iniciar a aplicação, mantém o console travado, exibindo o log de inicialização dos serviços
 $ docker-compose up
+# Iniciar a aplicação, não trava o console
+$ docker-compose up -d
+# Exibe o log do serviço no console
+$ docker logs micro-videos-app -f
+
+# Parar a aplicação
+$ docker-compose down
 ```
 
-#### Accesse no browser
-
+- Accesse no browser
 ```
 http://localhost:8000
 ```
 
-## Apéndice
+### PHP Comandos
+- Criando as Models
 
-Nosso aluno [Yuri Koster](https://github.com/yurikoster1) criou outra opção do repositório organizando melhor os arquivos Docker, se quiserem utilizar basta clonar o branch ```more_organized```.
+```bash
+# Executa o help do comando artisan make:model
+$ php artisan make:model -- help
+
+# Criar a Model Category dentro de Models, atenção para a posição da barra.
+# Este comando cria a Model, Factory, Migration, Seeder e Controller
+$ php artisan make:model Models/Category --all
+```
+
+- Criando uma seeder
+```bash
+# Criar a Seed Categories
+$ php artisan make:seeder CategoriesTableSeeder
+
+# A migração dos dados tem que ser executada dentro do container 
+# Acessa o bash do container
+$ docker exec -it micro-videos-app bash
+
+# Faz a migração da Seed
+$ php artisan migrate --seed
+
+# O Tinker é um console interativo do Laravel, um shell do PHP com acesso às classes do nosso projeto.
+$ php artisan tinker
+>>> \App\Models\Category::all();
+
+# Limpa o banco, executa um roll back e executa as migrações novamente
+$ php artisan migrate:refresh --seed
+
+# Apaga todo o banco, e executa as migrações
+$ php artisan migrate:fresh --seed
+```
