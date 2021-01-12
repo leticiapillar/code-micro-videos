@@ -15,10 +15,15 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        //
+        // Validação dos campos recebidos pela request
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'is_active' => 'boolean'
+        ]);
+        return Category::create($request->all());
     }
 
-    public function show(Category $category) //Routing Binding
+    public function show(Category $category) //Route Model Binding
     {
         return $category;
     }
