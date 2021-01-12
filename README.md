@@ -69,6 +69,32 @@ Este comando ajuda a verificar se as rotas estão corretas após alterar as cont
 $ php artisan route:list
 ```
 
+### Validação dos parametros recebidos na request
+Podemos validar os parametros recebidos na request de duas formas:
+1. Validação na controller: Validação dos campos recebidos pela request
+```PHP
+$this->validate($request, [
+    'name' => 'required|max:255',
+    'is_active' => 'boolean'
+]);
+```
+
+2. Criando uma classe Request para ser utilizada na Controller
+```bash
+# Cria uma classe Request para a Category
+$ php artisan make:request CategoryRequest
+```
+- Nesta classe implementamos as rules, validações dos campos recebidos na request
+```PHP
+public function rules()
+{
+    return [
+        'name' => 'required|max:255',
+        'is_active' => 'boolean'
+    ];
+}
+```
+
 ### Ferramentas para testas as rotas da API
 - [Postman](https://www.postman.com/)
 - [Insomnia Rest](https://insomnia.rest/)
