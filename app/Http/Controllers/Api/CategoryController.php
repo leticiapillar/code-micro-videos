@@ -7,6 +7,8 @@ use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
+use function React\Promise\all;
+
 class CategoryController extends Controller
 {
     public function index()
@@ -29,9 +31,10 @@ class CategoryController extends Controller
         return $category;
     }
 
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
-        //
+        $category->update($request->all());
+        return $category;
     }
 
     public function destroy(Category $category)
