@@ -69,6 +69,45 @@ Este comando ajuda a verificar se as rotas estão corretas após alterar as cont
 $ php artisan route:list
 ```
 
+#### Tinker (REPL)
+- [Laravel tinker](https://laravel.com/docs/7.x/artisan#tinker)
+- Ferramente para executar comandos no shell, esta ferramenta deve ser ativada no container do serviço
+```bash
+$ docker exec -it micro-videos-app bash
+/var/www$ php artisan tinker
+```
+- Exclusão lógica, comandos com o tinker.
+```bash
+# Seta a model que deseja usar
+$ use \App\Models\Category;
+
+# Executou a exclusão lógica (campo deleted_at com a data da exclusão)
+>>> Category::find(1)->delete();
+=> true
+
+# Retorna apenas os registros ativos
+>>> Category::find(1);
+=> null
+
+# Retorna o registro excluido
+>>> Category::withTrashed()->find(1);
+
+# Retorna todos os registros ativos e inativos (exclusão lógica)
+>>> Category::withTrashed()->get();
+
+# Retorna apenas os registros excluidos
+>>> Category::onlyTrashed()->get();
+
+# Reverte o registro excluido, seta null no campo deleted_at
+>>> Category::onlyTrashed()->find(1)->restore();
+=> true
+
+# Força a exclusão fisica do registro
+>>> Category::find(1)->forceDelete();
+=> true
+```
+
+
 ### Validação dos parametros recebidos na request
 Podemos validar os parametros recebidos na request de duas formas:
 1. Validação na controller: Validação dos campos recebidos pela request
@@ -94,6 +133,7 @@ public function rules()
     ];
 }
 ```
+
 
 ### Ferramentas para testas as rotas da API
 - [Postman](https://www.postman.com/)
