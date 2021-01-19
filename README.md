@@ -124,7 +124,7 @@ $this->validate($request, [
 $ php artisan make:request CategoryRequest
 ```
 - Nesta classe implementamos as rules, validações dos campos recebidos na request
-```PHP
+```php
 public function rules()
 {
     return [
