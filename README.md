@@ -138,3 +138,48 @@ public function rules()
 ### Ferramentas para testas as rotas da API
 - [Postman](https://www.postman.com/)
 - [Insomnia Rest](https://insomnia.rest/)
+
+
+### Testes automatizados no Laravel
+
+```bash
+$ php artisan make:test --help
+
+# Por padrão cria a classe de teses em tests\Feature
+$ php artisan make:test NameClassTest
+
+# Cria a classe de teses em tests\Unit
+$ php artisan make:test NameClassTest --unit
+
+# A classe tem que ter o sufixo Test no final do nome, NameClassTest
+# O metodo para teste tem que inificar com o prefixo testNameMethod
+$ php artisan make:test CategoryTest --unit
+
+# Executar todos os testes
+$ vendor/bin/phpunit
+
+# Executar todos os testes da classe Category
+$ vendor/bin/phpunit --filter CategoryTest
+
+# Executar os testes do metodo testExample da classe Category
+$ vendor/bin/phpunit --filter CategoryTest::testExample
+
+# Executar os teste pelo caminho relativo da classe Category
+$ vendor/bin/phpunit tests/Unit/CategoryTest.php
+$ vendor/bin/phpunit "Tests\\Unit\\CategoryTest"
+```
+
+
+### Observações
+- Ao executar os testes unitário apareceu o erro abaoxo:
+```bash
+Warning: Use of undefined constant PASSWORD_ARGON2_DEFAULT_MEMORY_COST - assumed 'PASSWORD_ARGON2_DEFAULT_MEMORY_COST' (this will throw an Error in a future version of PHP) in /Users/leticiapillar/projects/courses/code-education/microsservices/code-micro-videos/config/hashing.php on line 47
+```
+- Então comentei o bloco abaixo no arquivo `config/hashing.php`
+```php
+    // 'argon' => [
+    //     'memory' => PASSWORD_ARGON2_DEFAULT_MEMORY_COST,
+    //     'threads' => PASSWORD_ARGON2_DEFAULT_THREADS,
+    //     'time' => PASSWORD_ARGON2_DEFAULT_TIME_COST,
+    // ],
+```
