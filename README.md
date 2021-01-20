@@ -141,7 +141,7 @@ public function rules()
 
 
 ### Testes automatizados no Laravel
-
+- Comandos para executar os testes
 ```bash
 $ php artisan make:test --help
 
@@ -162,16 +162,26 @@ $ vendor/bin/phpunit
 $ vendor/bin/phpunit --filter CategoryTest
 
 # Executar os testes do metodo testExample da classe Category
+# Se existir classes e metdos com nome iguais irá executar todos
 $ vendor/bin/phpunit --filter CategoryTest::testExample
 
 # Executar os teste pelo caminho relativo da classe Category
 $ vendor/bin/phpunit tests/Unit/CategoryTest.php
 $ vendor/bin/phpunit "Tests\\Unit\\CategoryTest"
+
+# Executar o teste de um méetodo pelo caminho relativo da classe Category
+$ vendor/bin/phpunit --filter testIfUseTraits tests/Unit/CategoryTest.php
 ```
+
+### Execução dos testes do PHPUnit com VSCode
+1. Habiltar a extensão no contexto do container `Better PHPUnit, calebporzio.better-phpunit, calebporzio`
+2. Executar a aplicação no modo "Remote-Containers: Reopen in Container" para executar o docker subindo subindo a aplicação
+3. Na extensão ir para: `Settings > Workspace > Better-phpunit: Phpunit binary` e informar o caminho do phpunit `"better-phpunit.phpunitBinary": "/laravel-quickstart/vendor/bin/phpunit"`, lembrando que `laravel-quickstart/` é o caminho configurado como workspaceFolder no devcontainer 
+4. Executar os testes unitários: `shift + windows + p` > `Better PHPUnit`
 
 
 ### Observações
-- Ao executar os testes unitário apareceu o erro abaoxo:
+- Ao executar os testes unitário apareceu o erro abaixo:
 ```bash
 Warning: Use of undefined constant PASSWORD_ARGON2_DEFAULT_MEMORY_COST - assumed 'PASSWORD_ARGON2_DEFAULT_MEMORY_COST' (this will throw an Error in a future version of PHP) in /Users/leticiapillar/projects/courses/code-education/microsservices/code-micro-videos/config/hashing.php on line 47
 ```
