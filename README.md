@@ -148,12 +148,18 @@ $ php artisan make:test --help
 # Por padrão cria a classe de teses em tests\Feature
 $ php artisan make:test NameClassTest
 
-# Cria a classe de teses em tests\Unit
+# Criar uma classe de teste de integração em Feature/Models/CategoryTest
+$ php artisan make:test Models/CategoryTest
+
+# Cria a classe de unidade em tests\Unit
 $ php artisan make:test NameClassTest --unit
 
 # A classe tem que ter o sufixo Test no final do nome, NameClassTest
 # O metodo para teste tem que inificar com o prefixo testNameMethod
 $ php artisan make:test CategoryTest --unit
+
+# Cria uma classe de unidade em Unit/Models/CategoryTest
+$ php artisan make:test Models/CategoryTest --unit
 
 # Executar todos os testes
 $ vendor/bin/phpunit
