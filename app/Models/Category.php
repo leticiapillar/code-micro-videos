@@ -14,6 +14,9 @@ class Category extends Model
     protected $fillable = ['name', 'description', 'is_active'];
     // entende que o campos deletec_at é do tipo data
     protected $dates = ['deleted_at'];
+    protected $casts =[
+        'is_active' => 'boolean'
+    ];
 
     // servem par informar que não é auto-incremento no banco e que a chave primária é string
     public $incrementing = false;

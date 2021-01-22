@@ -35,6 +35,12 @@ class CategoryTest extends TestCase
         $this->assertEquals($fillable, $this->category->getFillable());
     }
 
+    public function testCastsAttributes()
+    {
+        $casts = ['is_active' => 'boolean'];
+        $this->assertEquals($casts, $this->category->getCasts());
+    }
+
     public function testKeyTypeAttribute()
     {
         // Verifica se o campo key é do tipo string

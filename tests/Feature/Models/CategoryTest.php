@@ -35,7 +35,7 @@ class CategoryTest extends TestCase
 
         $this->assertEquals('teste1', $category->name);
         $this->assertNull($category->description);
-        $this->assertTrue((bool)$category->is_active);
+        $this->assertTrue($category->is_active);
     }
 
     public function testCreateAttributeNameAndDescription() 
@@ -66,7 +66,7 @@ class CategoryTest extends TestCase
         ]);
         $category->refresh();
 
-        $this->assertFalse((bool)$category->is_active);
+        $this->assertFalse($category->is_active);
 
         $category = Category::create([
             'name' => 'teste1',
@@ -74,7 +74,7 @@ class CategoryTest extends TestCase
         ]);
         $category->refresh();
 
-        $this->assertTrue((bool)$category->is_active);
+        $this->assertTrue($category->is_active);
     }
 
 }
