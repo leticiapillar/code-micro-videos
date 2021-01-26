@@ -26,6 +26,17 @@ class CategoryTest extends TestCase
         );
     }
 
+    public function testCreateAttributeId()
+    {
+        /** @var Category $category */
+        $category = factory(Category::class)->create([
+            'description' => 'test description'
+        ])->first();
+
+        $this->assertNotNull($category->id);
+        $this->assertIsString($category->id);
+    }
+
     public function testCreateAttributeName() 
     {
         $category = Category::create([
@@ -95,6 +106,16 @@ class CategoryTest extends TestCase
         foreach($data as $key => $value) {
             $this->assertEquals($value, $category->{$key});
         }
+    }
+
+    public function testDelete() 
+    {
+        /** @var Category $category */
+        $category = factory(Category::class)->create()->first();
+        $this->assertNull($category->deleted_at);
+
+        $category->delete();
+        $this->assertNotNull($category->deleted_at);
     }
 
 }
