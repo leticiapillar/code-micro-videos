@@ -22,7 +22,9 @@ class CategoryController extends Controller
         //     'name' => 'required|max:255',
         //     'is_active' => 'boolean'
         // ]);
-        return Category::create($request->all());
+        $category = Category::create($request->all());
+        $category->refresh();
+        return $category;
     }
 
     public function show(Category $category) //Route Model Binding
