@@ -31,10 +31,11 @@ class CategoryTest extends TestCase
         /** @var Category $category */
         $category = factory(Category::class)->create([
             'description' => 'test description'
-        ])->first();
+        ]);
 
         $this->assertNotNull($category->id);
         $this->assertIsString($category->id);
+        $this->assertEquals(36, strlen($category->id));
     }
 
     public function testCreateAttributeName() 
@@ -94,7 +95,7 @@ class CategoryTest extends TestCase
         $category = factory(Category::class)->create([
             'description' => 'test description',
             'is_active' => false
-        ])->first();
+        ]);
 
         $data = [
             'name' => 'test name updated',
@@ -116,6 +117,11 @@ class CategoryTest extends TestCase
 
         $category->delete();
         $this->assertNotNull($category->deleted_at);
+        $this->assertNull(Category::find($category->id));
+
+        $category->restore();
+        $this->assertNull($category->deleted_at);
+        $this->assertNotNull(Category::find($category->id));
     }
 
 }

@@ -33,6 +33,7 @@ class GenreTest extends TestCase
 
         $this->assertNotNull($genre->id);
         $this->assertIsString($genre->id);
+        $this->assertEquals(36, strlen($genre->id));
     }
 
     public function testCreateAttributeName()
@@ -70,7 +71,7 @@ class GenreTest extends TestCase
         /** @var Genre $genre */
         $genre = factory(Genre::class)->create([
             'is_active' => false
-        ])->first();
+        ]);
 
         $data = [
             'name' => 'test name updated',
@@ -91,6 +92,11 @@ class GenreTest extends TestCase
 
         $genre->delete();
         $this->assertNotNull($genre->deleted_at);
+        $this->assertNull(Genre::find($genre->id));
+
+        $genre->restore();
+        $this->assertNull($genre->deleted_at);
+        $this->assertNotNull(Genre::find($genre->id));
     }
 
 }
