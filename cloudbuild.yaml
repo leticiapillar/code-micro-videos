@@ -4,7 +4,7 @@ steps:
   name: 'docker/compose'
   args: ['-f', 'docker-compose.cloudbuild.yaml', 'up', '-d']
 
-- id: "Chown in /var/www"
+- id: "Permissão em /var/www"
   name: 'docker'
   args: ['exec','-u','root','-t','micro-videos-app','chown','-R','www-data:www-data','/var/www']
 
