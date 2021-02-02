@@ -185,6 +185,16 @@ $ vendor/bin/phpunit --filter testIfUseTraits tests/Unit/CategoryTest.php
 3. Na extensão ir para: `Settings > Workspace > Better-phpunit: Phpunit binary` e informar o caminho do phpunit `"better-phpunit.phpunitBinary": "/laravel-quickstart/vendor/bin/phpunit"`, lembrando que `laravel-quickstart/` é o caminho configurado como workspaceFolder no devcontainer 
 4. Executar os testes unitários: `shift + windows + p` > `Better PHPUnit`
 
+- Os testes também podem ser executados pelo terminal do VSCode
+```bash
+$ /laravel-quickstart$ /laravel-quickstart/vendor/bin/phpunit
+```
+
+- Os testes também podem ser executados pelo terminal do container Docker
+```bash
+$ docker exec -it micro-videos-app bash
+$ vendor/bin/phpunit
+```
 
 ### Observações
 - Ao executar os testes unitário apareceu o erro abaixo:

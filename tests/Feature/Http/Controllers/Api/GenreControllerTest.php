@@ -166,9 +166,10 @@ class GenreCategoryControllerTest extends TestCase
             ->assertJson($genre->toArray());
         
         $response=$this->delete(route('genres.destroy', ['genre' => $genre->id]));
-        $response
-            ->assertStatus(204);
+        $response->assertStatus(204);
 
+        $this->assertNull(Genre::find($genre->id));
+        $this->assertNotNull(Genre::withTrashed()->find($genre->id));
     }
 
 

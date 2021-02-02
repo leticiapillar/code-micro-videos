@@ -206,10 +206,10 @@ class CategoryControllerTest extends TestCase
             ->assertJson($category->toArray());
         
         $response=$this->delete(route('categories.destroy', ['category' => $category->id]));
-        $response
-            ->assertStatus(204);
+        $response->assertStatus(204);
 
+        $this->assertNull(Category::find($category->id));
+        $this->assertNotNull(Category::withTrashed()->find($category->id));
     }
-
 
 }
