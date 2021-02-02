@@ -194,6 +194,8 @@ $ /laravel-quickstart$ /laravel-quickstart/vendor/bin/phpunit
 ```bash
 $ docker exec -it micro-videos-app bash
 $ vendor/bin/phpunit
+$ vendor/bin/phpunit --filter CategoryControllerTest
+$ vendor/bin/phpunit --filter CategoryControllerTest::testInvalidationData
 ```
 
 ### Observações
