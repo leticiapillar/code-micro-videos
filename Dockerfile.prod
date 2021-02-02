@@ -1,0 +1,33 @@
+# Imagem para o container de builder
+FROM php:7.3-fpm-alpine as builder
+RUN apk add --no-cache openssl bash mysql-client nodejs npm
+RUN docker-php-ext-install pdo pdo_mysql
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+WORKDIR /var/www
+RUN rm -rf /var/www/html 
+RUN ln -s public html
+
+COPY . /var/www
+RUN composer install && \
+    php artisan config:cache && \
+    chmod -R 775 storage
+RUN npm install
+
+# Imagem para o container de produção
+FROM php:7.3-fpm-alpine
+RUN apk add --no-cache mysql-client
+RUN docker-php-ext-install pdo pdo_mysql
+WORKDIR /var/www
+RUN rm -rf /var/www/html
+
+# Esta copiando de /var/www do container de builder para o container de prod
+COPY --from=builder /var/www .
+
+# Resolve o problema de permissão
+# https://stackoverflow.com/questions/48619445/permission-denied-error-using-laravel-docker
+RUN chown -R www-data:www-data /var/www
+
+EXPOSE 9000
+ENTRYPOINT ["php-fpm"]

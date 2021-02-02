@@ -1,0 +1,37 @@
+steps:
+
+- id: "Rodando docker-compose"
+  name: 'docker/compose'
+  args: ['-f', 'docker-compose.cloudbuild.yaml', 'up', '-d']
+
+- id: "Permissão em /var/www"
+  name: 'docker'
+  args: ['exec','-u','root','-t','micro-videos-app','chown','-R','www-data:www-data','/var/www']
+
+- id: "Rodando docker ps"
+  name: 'docker'
+  args: ['ps']
+
+- id: "Rodando composer install"
+  name: 'docker'
+  args: ['exec', '-t', 'micro-videos-app', 'composer', 'install']
+
+- id: "Copiando .env"
+  name: 'docker'
+  args: ['exec', '-t', 'micro-videos-app', 'cp', '.env.example', '.env']
+
+- id: "Copiando .env.testing"
+  name: 'docker'
+  args: ['exec', '-t', 'micro-videos-app', 'cp', '.env.testing.example', '.env.testing']
+
+- id: "Rodando key:generate"
+  name: 'docker'
+  args: ['exec', '-t', 'micro-videos-app', 'php', '/var/www/artisan', 'key:generate']
+
+- id: "Rodando migrations"
+  name: 'docker'
+  args: ['exec', '-t', 'micro-videos-app', 'php', '/var/www/artisan', 'migrate']
+
+- id: "Rodando teste unitário do PHPUnit"
+  name: 'docker'
+  args: ['exec', '-t', 'micro-videos-app', 'php', '/var/www/vendor/bin/phpunit', '-c', '/var/www/phpunit.xml']
