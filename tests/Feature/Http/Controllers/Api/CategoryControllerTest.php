@@ -6,12 +6,13 @@ use App\Models\Category;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
+use Tests\Traits\TestSaves;
 use Tests\Traits\TestValidations;
 
 class CategoryControllerTest extends TestCase
 {
 
-    use DatabaseMigrations, TestValidations;
+    use DatabaseMigrations, TestValidations, TestSaves;
     private $category;
 
     protected function setUp(): void
@@ -61,105 +62,66 @@ class CategoryControllerTest extends TestCase
 
     public function testStore()
     {
-        $response = $this->json('POST', route('categories.store'), [
+        $data = [
             'name' => 'test'
-        ]);
-
-        $id = $response->json('id');
-        $category = Category::find($id);
-
-        $response
-            ->assertStatus(201)
-            ->assertJson($category->toArray());
-
-        $this->assertTrue($response->json('is_active'));
-        $this->assertNull($response->json('description'));
+        ];
+        $response = $this->assertStore($data, $data + ['description' => null, 'is_active' => true, 'deleted_at' => null]);
+        $response->assertJsonStructure(['created_at', 'updated_at']);
     }
 
     public function testStoreWithAllAttributes()
     {
-        $response = $this->json('POST', route('categories.store'), [
+        $data = [
+            'name' => 'test',
+            'description' => 'test description',
+            'is_active' => false
+        ];
+        $this->assertStore($data, $data + [
             'name' => 'test',
             'description' => 'test description',
             'is_active' => false
         ]);
-
-        $id = $response->json('id');
-        $category = Category::find($id);
-
-        $response
-            ->assertStatus(201)
-            ->assertJson($category->toArray())
-            ->assertJsonFragment([
-                'name' => 'test',
-                'description' => 'test description',
-                'is_active' => false
-            ]);
     }
-
 
     public function testUpdate()
     {
-        $category = factory(Category::class)->create([
+        $this->category = factory(Category::class)->create([
             'description' => 'test description',
             'is_active' => false
         ]);
-
-        $response = $this->json(
-            'PUT',
-            route('categories.update', ['category' => $category->id]),
-            [
-                'name' => 'test',
-                'description' => 'test description updated',
-                'is_active' => true
-            ]
-        );
-
-        $id = $response->json('id');
-        $category = Category::find($id);
-
-        $response
-            ->assertStatus(200)
-            ->assertJson($category->toArray())
-            ->assertJsonFragment([
-                'name' => 'test',
-                'description' => 'test description updated',
-                'is_active' => true
-            ]);
+        $data =            [
+            'name' => 'test',
+            'description' => 'test description updated',
+            'is_active' => true
+        ];
+        $response = $this->assertUpdate($data, $data + ['deleted_at' => null]);
+        $response->assertJsonStructure(['created_at', 'updated_at']);
     }
 
     public function testUpdateWithDescriptionEmpty()
     {
-        $category = factory(Category::class)->create([
+        $this->category = factory(Category::class)->create([
             'description' => 'test description'
         ]);
-
-        $response = $this->json(
-            'PUT',
-            route('categories.update', ['category' => $category->id]),
-            [
-                'name' => 'test',
-                'description' => ''
-            ]
-        );
-        $response->assertJsonFragment(['description' => null]);
+        $data =            [
+            'name' => 'test',
+            'description' => '',
+            'is_active' => true
+        ];
+        $this->assertUpdate($data, array_merge($data, ['description' => null]));
     }
 
     public function testUpdateWithDescriptionNull()
     {
-        $category = factory(Category::class)->create([
+        $this->category = factory(Category::class)->create([
             'description' => 'test description'
         ]);
-
-        $response = $this->json(
-            'PUT',
-            route('categories.update', ['category' => $category->id]),
-            [
-                'name' => 'test',
-                'description' => null
-            ]
-        );
-        $response->assertJsonFragment(['description' => null]);
+        $data =            [
+            'name' => 'test',
+            'description' => null,
+            'is_active' => true
+        ];
+        $this->assertUpdate($data, array_merge($data, ['description' => null]));
     }
 
     public function testDestroy()
@@ -184,5 +146,10 @@ class CategoryControllerTest extends TestCase
     protected function routeUpdate()
     {
         return route('categories.update', ['category' => $this->category->id]);
+    }
+
+    protected function model()
+    {
+        return Category::class;
     }
 }
