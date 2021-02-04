@@ -198,6 +198,14 @@ $ vendor/bin/phpunit --filter CategoryControllerTest
 $ vendor/bin/phpunit --filter CategoryControllerTest::testInvalidationData
 ```
 
+### Execução do bash no container databse
+```bash
+$ docker exec -it micro-videos-db bash
+$ mysql -uroot -proot
+$ use code_micro_videos_test
+$ show tables;
+```
+
 ### Observações
 - Ao executar os testes unitário apareceu o erro abaixo:
 ```bash
