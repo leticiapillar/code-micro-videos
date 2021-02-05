@@ -52,7 +52,7 @@ class BasicCrudControllerTest extends TestCase
         $request
             ->shouldReceive('all')
             ->once()
-            ->andReturn(['name' => 'test naeme', 'description' => 'test description']);
+            ->andReturn(['name' => 'test name', 'description' => 'test description']);
 
         $obj = $this->controller->store($request);
         $this->assertEquals(
@@ -82,5 +82,34 @@ class BasicCrudControllerTest extends TestCase
         $reflactionMethod->setAccessible(true);
 
         $reflactionMethod->invokeArgs($this->controller, [0]);
+    }
+
+    public function testShow()
+    {
+        $category = CategoryStub::create(['name' => 'test name', 'description' => 'test description']);
+        $result = $this->controller->show($category->id);
+        $this->assertEquals(CategoryStub::find(1)->toArray(), $result->toArray());
+    }
+
+    public function testUpdate()
+    {
+        $category = CategoryStub::create(['name' => 'test name', 'description' => 'test description']);
+        $request = \Mockery::mock(Request::class);
+        $request
+            ->shouldReceive('all')
+            ->once()
+            ->andReturn(['name' => 'test name', 'description' => 'test description']);
+        $result = $this->controller->update($request, $category->id);
+        $this->assertEquals(CategoryStub::find(1)->toArray(), $result->toArray());
+    }
+
+    public function testDestroy()
+    {
+        $category = CategoryStub::create(['name' => 'test name', 'description' => 'test description']);
+        $response = $this->controller->destroy($category->id);
+        $this
+            ->createTestResponse($response)
+            ->assertStatus(204);
+        $this->assertCount(0, CategoryStub::all());
     }
 }

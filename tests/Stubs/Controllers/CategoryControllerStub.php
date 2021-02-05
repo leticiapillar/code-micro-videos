@@ -7,6 +7,14 @@ use Tests\Stubs\Models\CategoryStub;
 
 class CategoryControllerStub extends BasicCrudController
 {
+    // Incluimos até os campos que não são obrigatorio, como o description, 
+    // para que o retorno da função validation retorne esse campo para inserir quando o mesmo tiver dados
+    private $rules = [
+        'name' => 'required|max:255',
+        'description' => 'nullable',
+        'is_active' => 'boolean'
+    ];
+
     protected function model()
     {
         return CategoryStub::class;
@@ -14,11 +22,11 @@ class CategoryControllerStub extends BasicCrudController
 
     protected function rulesStore()
     {
-        // Incluimos até os campos que não são obrigatorio, como o description, 
-        // para que o retorno da função validation retorne esse campo para inserir quando o mesmo tiver dados
-        return [
-            'name' => 'required|max:255',
-            'description' => 'nullable'
-        ];
+        return $this->rules;
+    }
+
+    protected function rulesUpdate()
+    {
+        return $this->rules;
     }
 }

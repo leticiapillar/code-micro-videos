@@ -9,6 +9,7 @@ abstract class BasicCrudController extends Controller
 {
     protected abstract function model();
     protected abstract function rulesStore();
+    protected abstract function rulesUpdate();
 
     public function index()
     {
@@ -24,27 +25,30 @@ abstract class BasicCrudController extends Controller
         return $obj;
     }
 
+    public function show($id)
+    {
+        return $this->findOrFail($id);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $obj = $this->findOrFail($id);
+        $validateData = $this->validate($request, $this->rulesUpdate());
+        $obj->update($validateData);
+        return $obj;
+    }
+
+    public function destroy($id)
+    {
+        $obj = $this->findOrFail($id);
+        $obj->delete();
+        return response()->noContent();
+    }
+
     protected function findOrFail($id)
     {
         $model = $this->model();
         $keyName = (new $model)->getRouteKeyName();
         return $this->model()::where($keyName, $id)->firstOrFail();
     }
-
-    // public function show(Category $category) //Route Model Binding
-    // {
-    //     return $category;
-    // }
-
-    // public function update(CategoryRequest $request, Category $category)
-    // {
-    //     $category->update($request->all());
-    //     return $category;
-    // }
-
-    // public function destroy(Category $category)
-    // {
-    //     $category->delete();
-    //     return response()->noContent(); //204 - No Content
-    // }
 }
