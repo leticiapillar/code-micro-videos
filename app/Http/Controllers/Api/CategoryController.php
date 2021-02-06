@@ -2,45 +2,27 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 
-use function React\Promise\all;
-
-class CategoryController extends Controller
+class CategoryController extends BasicCrudController
 {
-    public function index()
+    private $rules = [
+        'name' => 'required|max:255',
+        'description' => 'nullable',
+        'is_active' => 'boolean'
+    ];
+
+    public function model()
     {
-        return Category::all();
+        return Category::class;
     }
 
-    public function store(CategoryRequest $request)
+    public function rulesStore()
     {
-        // Validação na controller: Validação dos campos recebidos pela request 
-        // $this->validate($request, [
-        //     'name' => 'required|max:255',
-        //     'is_active' => 'boolean'
-        // ]);
-        $category = Category::create($request->all());
-        $category->refresh();
-        return $category;
+        return $this->rules;
     }
-
-    public function show(Category $category) //Route Model Binding
+    public function rulesUpdate()
     {
-        return $category;
-    }
-
-    public function update(CategoryRequest $request, Category $category)
-    {
-        $category->update($request->all());
-        return $category;
-    }
-
-    public function destroy(Category $category)
-    {
-        $category->delete();
-        return response()->noContent(); //204 - No Content
+        return $this->rules;
     }
 }
