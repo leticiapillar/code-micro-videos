@@ -16,6 +16,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|CastMember withTrashed()
  * @method static \Illuminate\Database\Query\Builder|CastMember withoutTrashed()
  * @mixin \Eloquent
+ * @property string $id
+ * @property string $name
+ * @property int $type
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|CastMember whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastMember whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastMember whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastMember whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastMember whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CastMember whereUpdatedAt($value)
  */
 class CastMember extends Model
 {
