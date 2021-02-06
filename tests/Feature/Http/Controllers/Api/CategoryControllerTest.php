@@ -4,7 +4,6 @@ namespace Tests\Feature\Http\Controllers\Api;
 
 use App\Models\Category;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 use Tests\Traits\TestSaves;
 use Tests\Traits\TestValidations;
@@ -85,10 +84,6 @@ class CategoryControllerTest extends TestCase
 
     public function testUpdate()
     {
-        $this->category = factory(Category::class)->create([
-            'description' => 'test description',
-            'is_active' => false
-        ]);
         $data =            [
             'name' => 'test',
             'description' => 'test description updated',
@@ -100,9 +95,6 @@ class CategoryControllerTest extends TestCase
 
     public function testUpdateWithDescriptionEmpty()
     {
-        $this->category = factory(Category::class)->create([
-            'description' => 'test description'
-        ]);
         $data =            [
             'name' => 'test',
             'description' => '',
@@ -113,9 +105,6 @@ class CategoryControllerTest extends TestCase
 
     public function testUpdateWithDescriptionNull()
     {
-        $this->category = factory(Category::class)->create([
-            'description' => 'test description'
-        ]);
         $data =            [
             'name' => 'test',
             'description' => null,
