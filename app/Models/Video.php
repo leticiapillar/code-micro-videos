@@ -36,6 +36,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Video withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Video withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Category[] $categories
+ * @property-read int|null $categories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Video[] $videos
+ * @property-read int|null $videos_count
  */
 class Video extends Model
 {
@@ -53,4 +57,14 @@ class Video extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class);
+    }
 }

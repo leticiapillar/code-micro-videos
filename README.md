@@ -62,6 +62,20 @@ $ php artisan migrate:refresh --seed
 $ php artisan migrate:fresh --seed
 ```
 
+- Criando uma migration de relacionamento
+  * Relacionando de Videos com Categorias e Gêneros
+  * Usar o seguinte padrão: ordem alfabética para o nome das tabelas, usar o nome no singular
+
+```bash
+# Cria a migração para o relacionamento entre Categoria e Video
+$ php artisan make:migration create_category_video_table
+
+# Cria a migração para o relacionamento entre Genero e Video
+$ php artisan make:migration create_genre_video_table 
+❯ 
+```
+
+
 - Listando as rotas das Controllers
 Este comando ajuda a verificar se as rotas estão corretas após alterar as controllers.
 ```bash
