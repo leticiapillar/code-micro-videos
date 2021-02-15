@@ -10,7 +10,7 @@ class GenreTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function testListe()
+    public function testList()
     {
         factory(Genre::class, 1)->create();
         

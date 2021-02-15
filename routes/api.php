@@ -19,8 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Api'], function () {
     $exceptCreateAndEdit = [
-        'except' =>['create', 'edit']
+        'except' => ['create', 'edit']
     ];
     Route::resource('categories', 'CategoryController', $exceptCreateAndEdit);
     Route::resource('genres', 'GenreController', $exceptCreateAndEdit);
+    Route::resource('cast_members', 'CastMemberController', $exceptCreateAndEdit);
+    Route::resource('videos', 'VideoController', $exceptCreateAndEdit);
 });
