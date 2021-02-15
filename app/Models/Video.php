@@ -40,6 +40,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $categories_count
  * @property-read \Illuminate\Database\Eloquent\Collection|Video[] $videos
  * @property-read int|null $videos_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
+ * @property-read int|null $genres_count
  */
 class Video extends Model
 {
