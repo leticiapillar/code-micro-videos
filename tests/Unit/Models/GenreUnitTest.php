@@ -7,7 +7,7 @@ use App\Models\Traits\Uuid;
 use PHPUnit\Framework\TestCase;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class GenreTest extends TestCase
+class GenreUnitTest extends TestCase
 {
     private $genre;
 
@@ -53,5 +53,4 @@ class GenreTest extends TestCase
         $this->assertEqualsCanonicalizing($dates, $this->genre->getDates());
         $this->assertCount(count($dates), $this->genre->getDates());
     }
-
 }
