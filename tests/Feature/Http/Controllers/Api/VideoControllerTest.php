@@ -220,6 +220,38 @@ class VideoControllerTest extends TestCase
         }
     }
 
+    public function testRollbackUpdate()
+    {
+        $controller = \Mockery::mock(VideoController::class);
+        $controller
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $controller
+            ->shouldReceive('validate')
+            ->withAnyArgs()
+            ->andReturn($this->sendData + ['opened' => true]);
+
+        $controller
+            ->shouldReceive('rulesUpdate')
+            ->withAnyArgs()
+            ->andReturn([]);
+
+        $controller->shouldReceive('handleRelations')
+            ->once()
+            ->andThrow(new TestException());
+
+        $request = \Mockery::mock(HttpRequest::class);
+
+        try {
+            $this->assertFalse($this->video->opened);
+            $controller->update($request, $this->video->id);
+        } catch (TestException $exception) {
+            $this->assertNotNull(Video::find($this->video->id));
+            $this->assertFalse($this->video->opened);
+        }
+    }
+
     public function testDestroy()
     {
         $response = $this->get(route('videos.show', ['video' => $this->video->id]));

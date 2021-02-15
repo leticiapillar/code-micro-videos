@@ -72,7 +72,9 @@ $ php artisan make:migration create_category_video_table
 
 # Cria a migração para o relacionamento entre Genero e Video
 $ php artisan make:migration create_genre_video_table 
-❯ 
+
+# Cria a migração para o relacionamento entre Category e Genero
+$ php artisan make:migration create_category_genre_table
 ```
 
 

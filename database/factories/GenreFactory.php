@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Genre::class, function (Faker $faker) {
     return [
-        'name' => $faker->country
+        'name' => $faker->country,
+        'is_active' => true
     ];
 });

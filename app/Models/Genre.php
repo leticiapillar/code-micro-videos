@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Genre whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Genre whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Genre whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Category[] $categories
+ * @property-read int|null $categories_count
  */
 class Genre extends Model
 {
@@ -42,4 +44,8 @@ class Genre extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }

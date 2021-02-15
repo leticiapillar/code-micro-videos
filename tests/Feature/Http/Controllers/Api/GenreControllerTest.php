@@ -2,8 +2,12 @@
 
 namespace Tests\Feature\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\GenreController;
 use App\Models\Genre;
+use App\Models\Category;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Http\Request as HttpRequest;
+use Tests\Exceptions\TestException;
 use Tests\TestCase;
 use Tests\Traits\TestSaves;
 use Tests\Traits\TestValidations;
@@ -13,11 +17,15 @@ class GenreControllerTest extends TestCase
 
     use DatabaseMigrations, TestValidations, TestSaves;
     private $genre;
+    private $sendData;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->genre = factory(Genre::class)->create();
+        $this->sendData = [
+            'name' => 'test'
+        ];
     }
 
     public function testIndex()
@@ -41,16 +49,24 @@ class GenreControllerTest extends TestCase
     public function testInvalidationData()
     {
         $data = [
-            'name' => ''
+            'name' => '',
+            'categories_id' => ''
         ];
         $this->assertInvalidationInStoreAction($data, 'required');
         $this->assertInvalidationInUpdateAction($data, 'required');
+    }
 
+    public function testInvalidationDataMax()
+    {
         $data = [
             'name' => str_repeat('a', 256)
         ];
         $this->assertInvalidationInStoreAction($data, 'max.string', ['max' => 255]);
         $this->assertInvalidationInUpdateAction($data, 'max.string', ['max' => 255]);
+    }
+
+    public function testInvalidationBoolean()
+    {
 
         $data = [
             'is_active' => 'a'
@@ -59,36 +75,115 @@ class GenreControllerTest extends TestCase
         $this->assertInvalidationInUpdateAction($data, 'boolean');
     }
 
-    public function testStore()
+    public function testInvalidationCategoriesIdField()
     {
         $data = [
-            'name' => 'test'
+            'categories_id' => 'a'
         ];
-        $response = $this->assertStore($data, $data + ['is_active' => true, 'deleted_at' => null]);
-        $response->assertJsonStructure(['created_at', 'updated_at']);
+        $this->assertInvalidationInStoreAction($data, 'array');
+        $this->assertInvalidationInUpdateAction($data, 'array');
+
+        $data = [
+            'categories_id' => [100]
+        ];
+        $this->assertInvalidationInStoreAction($data, 'exists');
+        $this->assertInvalidationInUpdateAction($data, 'exists');
     }
 
-    public function testStoreWithAllAttributes()
+    public function testStoreAndUpdate()
     {
+        $category = factory(Category::class)->create();
+
         $data = [
-            'name' => 'test',
-            'is_active' => false
+            [
+                'send_data' => $this->sendData + [
+                    'categories_id' => [$category->id]
+                ],
+                'test_data' => $this->sendData + ['is_active' => true]
+            ],
+            [
+                'send_data' => $this->sendData + [
+                    'is_active' => false,
+                    'categories_id' => [$category->id]
+                ],
+                'test_data' => $this->sendData + ['is_active' => false]
+            ]
         ];
-        $this->assertStore($data, $data + [
-            'name' => 'test',
-            'is_active' => false
-        ]);
+
+        foreach ($data as $key => $value) {
+            $response = $this->assertStore(
+                $value['send_data'],
+                $value['test_data'] + ['deleted_at' => null]
+            );
+            $response->assertJsonStructure(['created_at', 'updated_at']);
+
+            $response = $this->assertUpdate(
+                $value['send_data'],
+                $value['test_data'] + ['deleted_at' => null]
+            );
+            $response->assertJsonStructure(['created_at', 'updated_at']);
+        }
     }
 
-
-    public function testUpdate()
+    public function testRollbackStore()
     {
-        $data = [
-            'name' => 'test',
-            'is_active' => true
-        ];
-        $response = $this->assertUpdate($data, $data + ['deleted_at' => null]);
-        $response->assertJsonStructure(['created_at', 'updated_at']);
+        $controller = \Mockery::mock(GenreController::class);
+        $controller
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $controller
+            ->shouldReceive('validate')
+            ->withAnyArgs()
+            ->andReturn($this->sendData);
+
+        $controller
+            ->shouldReceive('rulesStore')
+            ->withAnyArgs()
+            ->andReturn([]);
+
+        $controller->shouldReceive('handleRelations')
+            ->once()
+            ->andThrow(new TestException());
+
+        $request = \Mockery::mock(HttpRequest::class);
+
+        try {
+            $controller->store($request);
+        } catch (TestException $exception) {
+            $this->assertCount(1, Genre::all());
+        }
+    }
+
+    public function testRollbackUpdate()
+    {
+        $controller = \Mockery::mock(GenreController::class);
+        $controller
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods();
+
+        $controller
+            ->shouldReceive('validate')
+            ->withAnyArgs()
+            ->andReturn($this->sendData + ['is_active' => false]);
+
+        $controller
+            ->shouldReceive('rulesUpdate')
+            ->withAnyArgs()
+            ->andReturn([]);
+
+        $controller->shouldReceive('handleRelations')
+            ->once()
+            ->andThrow(new TestException());
+
+        $request = \Mockery::mock(HttpRequest::class);
+
+        try {
+            $controller->update($request, $this->genre->id);
+        } catch (TestException $exception) {
+            $this->assertNotNull(Genre::find($this->genre->id));
+            $this->assertTrue($this->genre->is_active);
+        }
     }
 
     public function testDestroy()
