@@ -3,8 +3,12 @@
 namespace App\Models;
 
 use App\Models\Traits\Uuid;
+use Eloquent;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Video
@@ -16,12 +20,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $opened
  * @property string $rating
  * @property int $duration
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Video newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Video newQuery()
- * @method static \Illuminate\Database\Query\Builder|Video onlyTrashed()
+ * @method static Builder|Video onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Video query()
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereDeletedAt($value)
@@ -33,14 +37,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereYearLauched($value)
- * @method static \Illuminate\Database\Query\Builder|Video withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Video withoutTrashed()
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Category[] $categories
+ * @method static Builder|Video withTrashed()
+ * @method static Builder|Video withoutTrashed()
+ * @mixin Eloquent
+ * @property-read Collection|Category[] $categories
  * @property-read int|null $categories_count
- * @property-read \Illuminate\Database\Eloquent\Collection|Video[] $videos
+ * @property-read Collection|Video[] $videos
  * @property-read int|null $videos_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
+ * @property-read Collection|Genre[] $genres
  * @property-read int|null $genres_count
  */
 class Video extends Model
@@ -62,11 +66,13 @@ class Video extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class);
+        // Se uma categoria for excluida logicamente, ela ainda aparece na lista de categirias do Video
+        return $this->belongsToMany(Category::class)->withTrashed();
     }
 
     public function genres()
     {
-        return $this->belongsToMany(Genre::class);
+        // Se um gênero for excluida logicamente, ela ainda aparece na lista de generos do Video
+        return $this->belongsToMany(Genre::class)->withTrashed();
     }
 }
