@@ -3,19 +3,21 @@
 namespace Tests\Feature\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\GenreController;
-use App\Models\Genre;
 use App\Models\Category;
+use App\Models\Genre;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\Request as HttpRequest;
 use Tests\Exceptions\TestException;
 use Tests\TestCase;
+use Tests\Traits\TestDatabase;
 use Tests\Traits\TestSaves;
 use Tests\Traits\TestValidations;
 
 class GenreControllerTest extends TestCase
 {
 
-    use DatabaseMigrations, TestValidations, TestSaves;
+    use DatabaseMigrations, TestValidations, TestSaves, TestDatabase;
+
     private $genre;
     private $sendData;
 
@@ -105,15 +107,15 @@ class GenreControllerTest extends TestCase
         $data = [
             [
                 'send_data' => $this->sendData + [
-                    'categories_id' => [$categoryId]
-                ],
+                        'categories_id' => [$categoryId]
+                    ],
                 'test_data' => $this->sendData + ['is_active' => true]
             ],
             [
                 'send_data' => $this->sendData + [
-                    'is_active' => false,
-                    'categories_id' => [$categoryId]
-                ],
+                        'is_active' => false,
+                        'categories_id' => [$categoryId]
+                    ],
                 'test_data' => $this->sendData + ['is_active' => false]
             ]
         ];
@@ -133,13 +135,6 @@ class GenreControllerTest extends TestCase
             $response->assertJsonStructure(['created_at', 'updated_at']);
             $this->assertHasCategory($response->json('id'), $categoryId);
         }
-    }
-
-    protected  function assertHasCategory($genreId, $categoryId) {
-        $this->assertDatabaseHas('category_genre', [
-           'genre_id' => $genreId,
-            'category_id' => $categoryId
-        ]);
     }
 
     public function testRollbackStore()
@@ -225,6 +220,27 @@ class GenreControllerTest extends TestCase
 
         $this->assertNull(Genre::find($this->genre->id));
         $this->assertNotNull(Genre::withTrashed()->find($this->genre->id));
+    }
+
+    public function testSyncCategories()
+    {
+        $categoriesId = factory(Category::class, 3)->create()->pluck('id')->toArray();
+
+        $data = $this->sendData + ['categories_id' => [$categoriesId[0]]];
+        $this->assertStoreDatabaseHas($data, 'category_genre', 'category_id', $categoriesId[0], 'genre_id');
+
+        $data = $this->sendData + ['categories_id' => [$categoriesId[1], $categoriesId[2]]];
+        $this->assertUpdateDatabaseMissing($data, 'category_genre', 'category_id', $categoriesId[0], 'genre_id');
+        $this->assertUpdateDatabaseHas($data, 'category_genre', 'category_id', $categoriesId[1], 'genre_id');
+        $this->assertUpdateDatabaseHas($data, 'category_genre', 'category_id', $categoriesId[2], 'genre_id');
+    }
+
+    protected function assertHasCategory($genreId, $categoryId)
+    {
+        $this->assertDatabaseHas('category_genre', [
+            'genre_id' => $genreId,
+            'category_id' => $categoryId
+        ]);
     }
 
     protected function routeStore()
