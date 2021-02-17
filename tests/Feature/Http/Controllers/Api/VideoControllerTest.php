@@ -251,6 +251,10 @@ class VideoControllerTest extends TestCase
 
         $request = Mockery::mock(HttpRequest::class);
 
+        $request->shouldReceive('get')
+            ->withAnyArgs()
+            ->andReturnNull();
+
         $hasError = false;
         try {
             $controller->store($request);
@@ -289,6 +293,10 @@ class VideoControllerTest extends TestCase
 
         $request = Mockery::mock(HttpRequest::class);
 
+        $request->shouldReceive('get')
+            ->withAnyArgs()
+            ->andReturnNull();
+        
         $hasError = false;
         try {
             $controller->update($request, $this->video->id);
