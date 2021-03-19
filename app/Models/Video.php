@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 /**
@@ -63,6 +64,54 @@ class Video extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+
+    public static function create(array $attributes = [])
+    {
+        try {
+            \DB::beginTransaction();
+            $obj = static::query()->create($attributes);
+            static::handleRelations($obj, $attributes);
+            //uploads aqui
+            \DB::commit();
+            return $obj;
+        } catch (\Exception $exception) {
+            if (isset($obj)) {
+                //excluir arquivos de upload
+            }
+            \DB::rollBack();
+            throw $exception;
+        }
+    }
+
+    public function update(array $attributes = [], array $options = [])
+    {
+        try {
+            \DB::beginTransaction();
+            $saved = parent::update($attributes, $options);
+            static::handleRelations($this, $attributes);
+            if ($saved) {
+                //uploads aqui
+                //excluir antigos
+            }
+            \DB::commit();
+            return $saved;
+        } catch (\Exception $exception) {
+            //excluir arquivos de upload
+            \DB::rollBack();
+            throw $exception;
+        }
+        return parent::update($attributes, $options);
+    }
+
+    public static function handleRelations(Video $video, array $attributes)
+    {
+        if(isset($attributes['categories_id'])) {
+            $video->categories()->sync($attributes['categories_id']);
+        }
+        if(isset($attributes['genres_id'])) {
+            $video->genres()->sync($attributes['genres_id']);
+        }
+    }
 
     public function categories()
     {
