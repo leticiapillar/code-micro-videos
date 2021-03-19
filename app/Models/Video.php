@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\UploadFiles;
 use App\Models\Traits\Uuid;
 use Eloquent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 /**
@@ -50,7 +50,7 @@ use Illuminate\Support\Carbon;
  */
 class Video extends Model
 {
-    use SoftDeletes, Uuid;
+    use SoftDeletes, Uuid, UploadFiles;
 
     const RATING_LIST = ['L', '10', '12', '14', '16', '18'];
 
@@ -64,14 +64,17 @@ class Video extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+    public static $fileFields = ['filme', 'banner', 'trailer'];
 
     public static function create(array $attributes = [])
     {
+        $files = self::extractFiles($attributes);
         try {
             \DB::beginTransaction();
+            /** @var Video $obj */
             $obj = static::query()->create($attributes);
             static::handleRelations($obj, $attributes);
-            //uploads aqui
+            $obj->uploadFiles($files);
             \DB::commit();
             return $obj;
         } catch (\Exception $exception) {
@@ -105,10 +108,10 @@ class Video extends Model
 
     public static function handleRelations(Video $video, array $attributes)
     {
-        if(isset($attributes['categories_id'])) {
+        if (isset($attributes['categories_id'])) {
             $video->categories()->sync($attributes['categories_id']);
         }
-        if(isset($attributes['genres_id'])) {
+        if (isset($attributes['genres_id'])) {
             $video->genres()->sync($attributes['genres_id']);
         }
     }
@@ -123,5 +126,10 @@ class Video extends Model
     {
         // Se um gênero for excluida logicamente, ela ainda aparece na lista de generos do Video
         return $this->belongsToMany(Genre::class)->withTrashed();
+    }
+
+    protected function uploadDir()
+    {
+        return $this->id;
     }
 }

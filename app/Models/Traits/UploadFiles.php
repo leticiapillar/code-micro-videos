@@ -33,12 +33,24 @@ trait UploadFiles
     }
 
     /**
-     * @param string/UploadFile $file
+     * @param string/UploadedFile $file
      */
     public function deleteFile($file)
     {
         $filename = $file instanceof UploadedFile ? $file->hashname() : $file;
         \Storage::delete("{$this->uploadDir()}/{$filename}");
+    }
+
+    public static function extractFiles(array &$attributes = [])
+    {
+        $files = [];
+        foreach (self::$fileFields as $file) {
+            if (isset($attributes[$file]) && $attributes[$file] instanceof UploadedFile) {
+                $files[] = $attributes[$file];
+                $attributes[$file] = $attributes[$file]->hashName();
+            }
+        }
+        return $files;
     }
 
 }
