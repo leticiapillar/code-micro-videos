@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\UploadFiles;
 use App\Models\Traits\Uuid;
+use Eloquent;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Video
@@ -16,12 +21,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property bool $opened
  * @property string $rating
  * @property int $duration
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Video newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Video newQuery()
- * @method static \Illuminate\Database\Query\Builder|Video onlyTrashed()
+ * @method static Builder|Video onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Video query()
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereDeletedAt($value)
@@ -33,19 +38,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereYearLauched($value)
- * @method static \Illuminate\Database\Query\Builder|Video withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Video withoutTrashed()
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Category[] $categories
+ * @method static Builder|Video withTrashed()
+ * @method static Builder|Video withoutTrashed()
+ * @mixin Eloquent
+ * @property-read Collection|Category[] $categories
  * @property-read int|null $categories_count
- * @property-read \Illuminate\Database\Eloquent\Collection|Video[] $videos
+ * @property-read Collection|Video[] $videos
  * @property-read int|null $videos_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Genre[] $genres
+ * @property-read Collection|Genre[] $genres
  * @property-read int|null $genres_count
+ * @property string|null $video_file
+ * @method static \Illuminate\Database\Eloquent\Builder|Video whereVideoFile($value)
  */
 class Video extends Model
 {
-    use SoftDeletes, Uuid;
+    use SoftDeletes, Uuid, UploadFiles;
 
     const RATING_LIST = ['L', '10', '12', '14', '16', '18'];
 
@@ -59,14 +66,72 @@ class Video extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+    public static $fileFields = ['video_file'];
+
+    public static function create(array $attributes = [])
+    {
+        $files = self::extractFiles($attributes);
+        try {
+            \DB::beginTransaction();
+            /** @var Video $obj */
+            $obj = static::query()->create($attributes);
+            static::handleRelations($obj, $attributes);
+            $obj->uploadFiles($files);
+            \DB::commit();
+            return $obj;
+        } catch (\Exception $exception) {
+            if (isset($obj)) {
+                //excluir arquivos de upload
+            }
+            \DB::rollBack();
+            throw $exception;
+        }
+    }
+
+    public function update(array $attributes = [], array $options = [])
+    {
+        try {
+            \DB::beginTransaction();
+            $saved = parent::update($attributes, $options);
+            static::handleRelations($this, $attributes);
+            if ($saved) {
+                //uploads aqui
+                //excluir antigos
+            }
+            \DB::commit();
+            return $saved;
+        } catch (\Exception $exception) {
+            //excluir arquivos de upload
+            \DB::rollBack();
+            throw $exception;
+        }
+        return parent::update($attributes, $options);
+    }
+
+    public static function handleRelations(Video $video, array $attributes)
+    {
+        if (isset($attributes['categories_id'])) {
+            $video->categories()->sync($attributes['categories_id']);
+        }
+        if (isset($attributes['genres_id'])) {
+            $video->genres()->sync($attributes['genres_id']);
+        }
+    }
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class);
+        // Se uma categoria for excluida logicamente, ela ainda aparece na lista de categirias do Video
+        return $this->belongsToMany(Category::class)->withTrashed();
     }
 
     public function genres()
     {
-        return $this->belongsToMany(Genre::class);
+        // Se um gênero for excluida logicamente, ela ainda aparece na lista de generos do Video
+        return $this->belongsToMany(Genre::class)->withTrashed();
+    }
+
+    protected function uploadDir()
+    {
+        return $this->id;
     }
 }

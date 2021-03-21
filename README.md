@@ -150,6 +150,14 @@ public function rules()
 }
 ```
 
+### Validação customizada com o Laravel
+- [Custom Validation Rules](https://laravel.com/docs/7.x/validation#custom-validation-rules)
+```bash
+# Criar uma classe de validação em /app/Rules
+$ php artisan make:rule GenresHasCategoriesRule
+Rule created successfully.
+
+```
 
 ### Ferramentas para testas as rotas da API
 - [Postman](https://www.postman.com/)
