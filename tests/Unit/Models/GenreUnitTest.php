@@ -4,7 +4,7 @@ namespace Tests\Unit\Models;
 
 use App\Models\Genre;
 use App\Models\Traits\Uuid;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GenreUnitTest extends TestCase

@@ -38,7 +38,7 @@ class VideoTest extends TestCase
         $videosKeys = array_keys($videos->first()->getAttributes());
         $this->assertEqualsCanonicalizing(
             [
-                'id', 'title', 'description', 'year_lauched', 'opened', 'rating', 'duration', 'created_at', 'updated_at', 'deleted_at'
+                'id', 'title', 'description', 'year_lauched', 'opened', 'rating', 'duration', 'video_file', 'created_at', 'updated_at', 'deleted_at'
             ],
             $videosKeys
         );
