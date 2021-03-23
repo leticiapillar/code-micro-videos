@@ -60,17 +60,17 @@ class VideoControllerTest extends BaseVideoControllerTestCase
         $genre = factory(Genre::class)->create();
         $genre->categories()->sync($category->id);
 
-        $response = $this->json(
-            'PUT',
-            $this->routeUpdate(),
-            $this->sendData + [
-                'categories_id' => [$category->id],
-                'genres_id' => [$genre->id]
+//        $response = $this->json(
+//            'PUT',
+//            $this->routeUpdate(),
+//            $this->sendData + [
+//                'categories_id' => [$category->id],
+//                'genres_id' => [$genre->id]
+//
+//            ] + $files
+//        );
 
-            ] + $files
-        );
-
-        $response->assertStatus(200);
+//        $response->assertStatus(200);
 //        $id = $response->json('id');
 //        foreach ($files as $file) {
 //            \Storage::assertExists("$id/{$file->hashName()}");
