@@ -56,7 +56,7 @@ class Video extends Model
 
     const RATING_LIST = ['L', '10', '12', '14', '16', '18'];
 
-    protected $fillable = ['title', 'description', 'year_lauched', 'opened', 'rating', 'duration'];
+    protected $fillable = ['title', 'description', 'year_lauched', 'opened', 'rating', 'duration', 'video_file', 'thumb_file'];
     protected $dates = ['deleted_at'];
     protected $casts = [
         'opened' => 'boolean',
@@ -66,7 +66,7 @@ class Video extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
-    public static $fileFields = ['video_file'];
+    public static $fileFields = ['video_file', 'thumb_file'];
 
     public static function create(array $attributes = [])
     {
@@ -81,7 +81,7 @@ class Video extends Model
             return $obj;
         } catch (\Exception $exception) {
             if (isset($obj)) {
-                //excluir arquivos de upload
+                $obj->deleteFiles($files);
             }
             \DB::rollBack();
             throw $exception;
@@ -90,18 +90,21 @@ class Video extends Model
 
     public function update(array $attributes = [], array $options = [])
     {
+        $files = self::extractFiles($attributes);
         try {
             \DB::beginTransaction();
             $saved = parent::update($attributes, $options);
             static::handleRelations($this, $attributes);
             if ($saved) {
-                //uploads aqui
-                //excluir antigos
+                $this->uploadFiles($files);
             }
             \DB::commit();
+            if ($saved && count($files)) {
+                $this->deleteOldFiles();
+            }
             return $saved;
         } catch (\Exception $exception) {
-            //excluir arquivos de upload
+            $this->deleteFiles($files);
             \DB::rollBack();
             throw $exception;
         }

@@ -20,6 +20,11 @@ $ docker logs micro-videos-app -f
 
 # Parar a aplicação
 $ docker-compose down
+
+# Recria (rebuild) a imagem do docker
+docker-compose up -d  --build
+# Força reecriaa (rebuild) a imagem do docker
+docker-compose up -d --force-recreate --build
 ```
 
 - Accesse no browser
@@ -229,6 +234,15 @@ $ mysql -uroot -proot
 $ use code_micro_videos_test
 $ show tables;
 ```
+
+### Processamento de Imagem (GD)
+- [Link](https://www.php.net/manual/pt_BR/book.image.php)
+- Alteração no arquivo Dockerfile para instalar os pacotes: `freetype-dev, libjpeg-turbo-dev, libpng-dev`
+- Executar os camandos de configuração do GD
+```
+RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
+RUN docker-php-ext-install -j$(nproc) gd
+````
 
 ### Observações
 - Ao executar os testes unitário apareceu o erro abaixo:
