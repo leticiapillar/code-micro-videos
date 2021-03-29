@@ -49,6 +49,8 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $genres_count
  * @property string|null $video_file
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereVideoFile($value)
+ * @property string|null $thumb_file
+ * @method static \Illuminate\Database\Eloquent\Builder|Video whereThumbFile($value)
  */
 class Video extends Model
 {
