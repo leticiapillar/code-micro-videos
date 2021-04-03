@@ -7,7 +7,7 @@ use App\Models\Genre;
 use App\Models\Video;
 use Illuminate\Database\QueryException;
 
-class VideoCrudTest extends BaseVideoTestcase
+class VideoCrudTest extends BaseVideoTestCase
 {
 
     private $fileFieldsData = [];

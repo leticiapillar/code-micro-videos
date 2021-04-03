@@ -6,7 +6,7 @@ use App\Models\Video;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
-abstract class BaseVideoTestcase extends TestCase
+abstract class BaseVideoTestCase extends TestCase
 {
     use DatabaseMigrations;
 

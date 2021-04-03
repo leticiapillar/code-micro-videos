@@ -16,13 +16,29 @@ steps:
   name: 'docker'
   args: ['exec', '-t', 'micro-videos-app', 'composer', 'install']
 
+- id: "Limpando Cache"
+  name: 'docker'
+  args: ['exec','-t','micro-videos-app','php','/var/www/artisan','cache:clear']
+
+- id: "Limpando Cache Configuração"
+  name: 'docker'
+  args: ['exec','-t','micro-videos-app','php','/var/www/artisan','config:clear']
+
 - id: "Copiando .env"
   name: 'docker'
   args: ['exec', '-t', 'micro-videos-app', 'cp', '.env.example', '.env']
 
+- id: "Cat .env"
+  name: 'docker'
+  args: ['exec', '-t', 'micro-videos-app', 'cat', '.env']
+
 - id: "Copiando .env.testing"
   name: 'docker'
   args: ['exec', '-t', 'micro-videos-app', 'cp', '.env.testing.example', '.env.testing']
+
+- id: "Cat .env.testing"
+  name: 'docker'
+  args: ['exec', '-t', 'micro-videos-app', 'cat', '.env.testing']
 
 - id: "Rodando key:generate"
   name: 'docker'

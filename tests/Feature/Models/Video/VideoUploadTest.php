@@ -9,7 +9,7 @@ use Illuminate\Database\Events\TransactionCommitted;
 use Illuminate\Http\UploadedFile;
 use Tests\Exceptions\TestException;
 
-class VideoUploadTest extends BaseVideoTestcase
+class VideoUploadTest extends BaseVideoTestCase
 {
 
     public function testCreateWithFiles()

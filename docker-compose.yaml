@@ -37,11 +37,12 @@ services:
 
     db:
         build: ./.docker/mysql
+        command: --innodb-use-native-aio=0
         container_name: micro-videos-db
         restart: always
         tty: true
         ports:
-            - "33006:3306"
+            - "3306:3306"
         volumes:
             - ./.docker/dbdata:/var/lib/mysql
             - ./.docker/mysql:/docker-entrypoint-initdb.d

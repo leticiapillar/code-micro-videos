@@ -28,19 +28,20 @@ services:
             - app
 
     db:
-        build: ./.docker/mysql
+        build: .docker/mysql
         command: --innodb-use-native-aio=0
         container_name: micro-videos-db
         restart: always
         tty: true
         ports:
-            - "33006:3306"
+            - "3306:3306"
         volumes:
-            - ./.docker/dbdata:/var/lib/mysql
+#            - ./.docker/dbdata:/var/lib/mysql
             - ./.docker/mysql:/docker-entrypoint-initdb.d
         environment:
+#            - MYSQL_DATABASE=code_micro_videos
             - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_USER=root
+#            - MYSQL_USER=root
         networks:
             - app-network
 

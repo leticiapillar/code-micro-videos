@@ -257,3 +257,17 @@ Warning: Use of undefined constant PASSWORD_ARGON2_DEFAULT_MEMORY_COST - assumed
     //     'time' => PASSWORD_ARGON2_DEFAULT_TIME_COST,
     // ],
 ```
+
+### Problemas encontrados
+
+**Erro ao rodar o step de migration no build da GCP**
+- Ao executar a etapa de migração no GCP aparecei o seguinte erro:
+```
+ Illuminate\Database\QueryException  : SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo failed: Name does not resolve (SQL: select * from information_schema.tables where table_schema = code_micro_videos and table_name = migrations and table_type = 'BASE TABLE')
+ ```
+- Para corrigir, foram feitos alguns ajustes no arquivo `docker-compose.cloudbuild.yaml` nas configurações do serviço de banco de dados, `service db `:
+1. Removido o mapeamento de volune já que estamos forçando o usuário mysql com ID 1000 e no Google Cloud, , dá problema de permissão e não sobe.
+2. Removida a variável MYSQL_USER=root, isso funcionava até a última versão do MySQL 5.7, agora ele verifica se a variável é root e lança um erro dizendo que o root já existe.
+3. Outro erro que apareceu foi na execução dos testes uniários no GCP. Como estamos usando dois banco de dados, um para a aplicação e outro para os testes unitários, o mapeamento do entrypoint do MySQL para executar o script SQL e criar os dois bancos deve está configurado corretamente. Dessa forma não precisamos informar o valor para a variável de ambiente `MYSQL_DATABASE`.
+
+- Mais detalhes sobre esses problemas estão neste post do [forum do curso](https://forum.code.education/forum/topico/erro-ao-rodar-o-step-de-migration-no-build-da-gcp-182/)
