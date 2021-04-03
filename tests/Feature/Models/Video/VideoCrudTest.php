@@ -30,7 +30,8 @@ class VideoCrudTest extends BaseVideoTestCase
         $videosKeys = array_keys($videos->first()->getAttributes());
         $this->assertEqualsCanonicalizing(
             [
-                'id', 'title', 'description', 'year_lauched', 'opened', 'rating', 'duration', 'video_file', 'thumb_file',
+                'id', 'title', 'description', 'year_lauched', 'opened', 'rating', 'duration',
+                'video_file', 'thumb_file', 'banner_file', 'trailer_file',
                 'created_at', 'updated_at', 'deleted_at'
             ],
             $videosKeys
@@ -48,7 +49,7 @@ class VideoCrudTest extends BaseVideoTestCase
         $this->assertEquals(36, strlen($video->id));
     }
 
-    public function testCreateWithBasicAttributes()
+    public function testCreateWithBasicFields()
     {
         $video = Video::create($this->sendData + $this->fileFieldsData);
         $video->refresh();
@@ -82,7 +83,7 @@ class VideoCrudTest extends BaseVideoTestCase
         $this->assertHasGenre($video->id, $genre->id);
     }
 
-    public function testUpdateWithBasicAttributes()
+    public function testUpdateWithBasicFields()
     {
         /** @var Video $video */
         $video = factory(Video::class)->create([

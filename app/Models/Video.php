@@ -58,7 +58,8 @@ class Video extends Model
 
     const RATING_LIST = ['L', '10', '12', '14', '16', '18'];
 
-    protected $fillable = ['title', 'description', 'year_lauched', 'opened', 'rating', 'duration', 'video_file', 'thumb_file'];
+    protected $fillable = ['title', 'description', 'year_lauched', 'opened', 'rating', 'duration',
+        'video_file', 'thumb_file', 'banner_file', 'trailer_file'];
     protected $dates = ['deleted_at'];
     protected $casts = [
         'opened' => 'boolean',
@@ -68,7 +69,7 @@ class Video extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
-    public static $fileFields = ['video_file', 'thumb_file'];
+    public static $fileFields = ['video_file', 'thumb_file', 'banner_file', 'trailer_file'];
 
     public static function create(array $attributes = [])
     {

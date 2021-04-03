@@ -9,7 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Tests\Traits\TestUploads;
 use Tests\Traits\TestValidations;
 
-class VideoControllerTest extends BaseVideoControllerTestCase
+class VideoControllerUploadsTest extends BaseVideoControllerTestCase
 {
 
     use  TestValidations, TestUploads;
@@ -19,7 +19,7 @@ class VideoControllerTest extends BaseVideoControllerTestCase
         $this->assertInvalidationFile(
             'video_file',
             'mp4',
-            12,
+            50,
             'mimetypes', ['values' => 'video/mp4']
         );
     }
