@@ -241,8 +241,64 @@ $ show tables;
 - Executar os camandos de configuração do GD
 ```
 RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
-RUN docker-php-ext-install -j$(nproc) gd
+RUN docker-php-ext-install -j$(nproc) 
 ````
+
+### Google Cloud Storage
+- Lib para o PHP: laravel: [Superbalist / laravel-google-cloud-storage](https://github.com/Superbalist/laravel-google-cloud-storage)
+- Adicionar manual no arquivo `app.php`
+```
+'providers' => [
+    // ...
+    Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider::class,
+]
+```
+- Se ocorrer o erro `InvalidArgumentException : Driver [gcs] is not supported.`, limpar o cache em `bootstrap/cache`
+- Erro de ACL: `Cannot insert legacy ACL for an object when uniform bucket-level access is enabled. Read more at`, 
+  [Bug ACL GCS](https://forum.code.education/forum/topico/bug-acl-gcs-221/),
+  [Error: Bucket Policy Only #80](https://github.com/Superbalist/laravel-google-cloud-storage/issues/80)
+```
+Google\Cloud\Core\Exception\BadRequestException: { 
+    "error": { 
+        "code": 400, 
+        "message": "Cannot insert legacy ACL for an object when uniform bucket-level access is enabled. Read more at https://cloud.google.com/storage/docs/uniform-bucket-level-access", 
+        "errors": [ 
+            { 
+                "message": "Cannot insert legacy ACL for an object when uniform bucket-level access is enabled. Read more at https://cloud.google.com/storage/docs/uniform-bucket-level-access", 
+                "domain": "global", 
+                "reason": "invalid" 
+            } 
+        ]
+    }
+```
+
+
+### Google Cloud Key Management
+- [Link](https://cloud.google.com/security-key-management?hl=pt-br)
+- Documentação:[Como criptografar e descriptografar dados com uma chave simétrica](https://cloud.google.com/kms/docs/encrypt-decrypt?hl=pt-br)
+- Comandos
+```
+# Configuraro o gcloud com o projeto 
+$ gcloud init
+$ gcloud kms
+
+# Encriptar a chave
+$ gcloud kms encrypt \
+    --key service-accoount-storage \
+    --keyring codeflix \
+    --location global  \
+    --plaintext-file ./storage/credentials/google/service-account-storage.json \
+    --ciphertext-file ./storage/credentials/google/service-account-storage.json.enc
+
+
+# Dencriptar a chave
+$ gcloud kms decrypt \
+    --key service-accoount-storage \
+    --keyring codeflix \
+    --location global  \
+    --plaintext-file ./storage/credentials/google/service-account-storage.json \
+    --ciphertext-file ./storage/credentials/google/service-account-storage.json.enc
+```
 
 ### Observações
 - Ao executar os testes unitário apareceu o erro abaixo:

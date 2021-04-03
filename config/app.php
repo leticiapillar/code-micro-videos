@@ -175,6 +175,12 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         *  Superbalist / laravel-google-cloud-storage
+         *  Plugin para Google Cloud Storage
+         */
+        Superbalist\LaravelGoogleCloudStorage\GoogleCloudStorageServiceProvider::class,
+
     ],
 
     /*

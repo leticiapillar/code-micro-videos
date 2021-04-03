@@ -1,8 +1,25 @@
 steps:
 
+- id: "Gerando service-account-storage.json"
+  name: 'gcr.io/cloud-builders/gcloud'
+  args:
+    - kms
+    - decrypt
+    - --key=service-accoount-storage
+    - --keyring=codeflix
+    - --location=global
+    - --plaintext-file=./storage/credentials/google/service-account-storage.json
+    - --ciphertext-file=./storage/credentials/google/service-account-storage.json.enc
+
 - id: "Rodando docker-compose"
   name: 'docker/compose'
   args: ['-f', 'docker-compose.cloudbuild.yaml', 'up', '-d']
+  env:
+    - GOOGLE_CLOUD_PROJECT_ID=$PROJECT_ID
+    - GOOGLE_CLOUD_KEY_FILE=service-account-storage.json
+    - GOOGLE_CLOUD_STORAGE_BUCKET=code-micro-videos-leticia
+    - GOOGLE_CLOUD_STORAGE_API_URI=https://storage.cloud.google.com/code-micro-videos-leticia
+    - TESTING_PROD=true
 
 - id: "Permissão em /var/www"
   name: 'docker'
