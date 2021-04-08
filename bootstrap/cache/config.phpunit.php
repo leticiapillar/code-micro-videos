@@ -1,5 +1,5 @@
 <?php return array (
-  'app' =>
+  'app' => 
   array (
     'name' => 'Laravel',
     'env' => 'testing',
@@ -12,7 +12,7 @@
     'faker_locale' => 'en_US',
     'key' => 'base64:KXriJ44+bmjwlMw6u8kD2cvxoNssPsfu+E0oMb/DcQE=',
     'cipher' => 'AES-256-CBC',
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Illuminate\\Auth\\AuthServiceProvider',
       1 => 'Illuminate\\Broadcasting\\BroadcastServiceProvider',
@@ -42,7 +42,7 @@
       25 => 'App\\Providers\\RouteServiceProvider',
       26 => 'Superbalist\\LaravelGoogleCloudStorage\\GoogleCloudStorageServiceProvider',
     ),
-    'aliases' =>
+    'aliases' => 
     array (
       'App' => 'Illuminate\\Support\\Facades\\App',
       'Arr' => 'Illuminate\\Support\\Arr',
@@ -81,38 +81,38 @@
       'View' => 'Illuminate\\Support\\Facades\\View',
     ),
   ),
-  'auth' =>
+  'auth' => 
   array (
-    'defaults' =>
+    'defaults' => 
     array (
       'guard' => 'web',
       'passwords' => 'users',
     ),
-    'guards' =>
+    'guards' => 
     array (
-      'web' =>
+      'web' => 
       array (
         'driver' => 'session',
         'provider' => 'users',
       ),
-      'api' =>
+      'api' => 
       array (
         'driver' => 'token',
         'provider' => 'users',
         'hash' => false,
       ),
     ),
-    'providers' =>
+    'providers' => 
     array (
-      'users' =>
+      'users' => 
       array (
         'driver' => 'eloquent',
         'model' => 'App\\User',
       ),
     ),
-    'passwords' =>
+    'passwords' => 
     array (
-      'users' =>
+      'users' => 
       array (
         'provider' => 'users',
         'table' => 'password_resets',
@@ -120,77 +120,77 @@
       ),
     ),
   ),
-  'broadcasting' =>
+  'broadcasting' => 
   array (
     'default' => 'log',
-    'connections' =>
+    'connections' => 
     array (
-      'pusher' =>
+      'pusher' => 
       array (
         'driver' => 'pusher',
         'key' => '',
         'secret' => '',
         'app_id' => '',
-        'options' =>
+        'options' => 
         array (
           'cluster' => 'mt1',
           'useTLS' => true,
         ),
       ),
-      'redis' =>
+      'redis' => 
       array (
         'driver' => 'redis',
         'connection' => 'default',
       ),
-      'log' =>
+      'log' => 
       array (
         'driver' => 'log',
       ),
-      'null' =>
+      'null' => 
       array (
         'driver' => 'null',
       ),
     ),
   ),
-  'cache' =>
+  'cache' => 
   array (
     'default' => 'array',
-    'stores' =>
+    'stores' => 
     array (
-      'apc' =>
+      'apc' => 
       array (
         'driver' => 'apc',
       ),
-      'array' =>
+      'array' => 
       array (
         'driver' => 'array',
       ),
-      'database' =>
+      'database' => 
       array (
         'driver' => 'database',
         'table' => 'cache',
         'connection' => NULL,
       ),
-      'file' =>
+      'file' => 
       array (
         'driver' => 'file',
         'path' => '/var/www/storage/framework/cache/data',
       ),
-      'memcached' =>
+      'memcached' => 
       array (
         'driver' => 'memcached',
         'persistent_id' => NULL,
-        'sasl' =>
+        'sasl' => 
         array (
           0 => NULL,
           1 => NULL,
         ),
-        'options' =>
+        'options' => 
         array (
         ),
-        'servers' =>
+        'servers' => 
         array (
-          0 =>
+          0 => 
           array (
             'host' => '127.0.0.1',
             'port' => 11211,
@@ -198,12 +198,12 @@
           ),
         ),
       ),
-      'redis' =>
+      'redis' => 
       array (
         'driver' => 'redis',
         'connection' => 'cache',
       ),
-      'dynamodb' =>
+      'dynamodb' => 
       array (
         'driver' => 'dynamodb',
         'key' => '',
@@ -215,12 +215,12 @@
     ),
     'prefix' => 'laravel_cache',
   ),
-  'database' =>
+  'database' => 
   array (
     'default' => 'mysql',
-    'connections' =>
+    'connections' => 
     array (
-      'sqlite' =>
+      'sqlite' => 
       array (
         'driver' => 'sqlite',
         'url' => NULL,
@@ -228,7 +228,7 @@
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
-      'mysql' =>
+      'mysql' => 
       array (
         'driver' => 'mysql',
         'url' => NULL,
@@ -244,11 +244,11 @@
         'prefix_indexes' => true,
         'strict' => true,
         'engine' => NULL,
-        'options' =>
+        'options' => 
         array (
         ),
       ),
-      'pgsql' =>
+      'pgsql' => 
       array (
         'driver' => 'pgsql',
         'url' => NULL,
@@ -263,7 +263,7 @@
         'schema' => 'public',
         'sslmode' => 'prefer',
       ),
-      'sqlsrv' =>
+      'sqlsrv' => 
       array (
         'driver' => 'sqlsrv',
         'url' => NULL,
@@ -278,15 +278,15 @@
       ),
     ),
     'migrations' => 'migrations',
-    'redis' =>
+    'redis' => 
     array (
       'client' => 'phpredis',
-      'options' =>
+      'options' => 
       array (
         'cluster' => 'redis',
         'prefix' => 'laravel_database_',
       ),
-      'default' =>
+      'default' => 
       array (
         'url' => NULL,
         'host' => 'redis',
@@ -294,7 +294,7 @@
         'port' => '6379',
         'database' => 0,
       ),
-      'cache' =>
+      'cache' => 
       array (
         'url' => NULL,
         'host' => 'redis',
@@ -304,30 +304,30 @@
       ),
     ),
   ),
-  'filesystems' =>
+  'filesystems' => 
   array (
-    'default' => 'gcs',
+    'default' => 'video_local',
     'cloud' => 's3',
-    'disks' =>
+    'disks' => 
     array (
-      'local' =>
+      'local' => 
       array (
         'driver' => 'local',
         'root' => '/var/www/storage/app',
       ),
-      'video_local' =>
+      'video_local' => 
       array (
         'driver' => 'local',
         'root' => '/var/www/storage/app/public/videos',
       ),
-      'public' =>
+      'public' => 
       array (
         'driver' => 'local',
         'root' => '/var/www/storage/app/public',
         'url' => 'http://localhost/storage',
         'visibility' => 'public',
       ),
-      's3' =>
+      's3' => 
       array (
         'driver' => 's3',
         'key' => '',
@@ -336,11 +336,11 @@
         'bucket' => '',
         'url' => NULL,
       ),
-      'gcs' =>
+      'gcs' => 
       array (
         'driver' => 'gcs',
         'project_id' => '',
-        'key_file' => '/var/www/storage//credentials/google/_service-account-storage.json',
+        'key_file' => '/var/www/storage//credentials/google/service-account-storage.json',
         'bucket' => 'code-micro-videos-leticia',
         'path_prefix' => NULL,
         'storage_api_uri' => 'https://storage.cloud.google.com/code-micro-videos-leticia',
@@ -348,42 +348,42 @@
       ),
     ),
   ),
-  'hashing' =>
+  'hashing' => 
   array (
     'driver' => 'bcrypt',
-    'bcrypt' =>
+    'bcrypt' => 
     array (
       'rounds' => '4',
     ),
   ),
-  'logging' =>
+  'logging' => 
   array (
     'default' => 'stack',
-    'channels' =>
+    'channels' => 
     array (
-      'stack' =>
+      'stack' => 
       array (
         'driver' => 'stack',
-        'channels' =>
+        'channels' => 
         array (
           0 => 'daily',
         ),
         'ignore_exceptions' => false,
       ),
-      'single' =>
+      'single' => 
       array (
         'driver' => 'single',
         'path' => '/var/www/storage/logs/laravel.log',
         'level' => 'debug',
       ),
-      'daily' =>
+      'daily' => 
       array (
         'driver' => 'daily',
         'path' => '/var/www/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
-      'slack' =>
+      'slack' => 
       array (
         'driver' => 'slack',
         'url' => NULL,
@@ -391,45 +391,45 @@
         'emoji' => ':boom:',
         'level' => 'critical',
       ),
-      'papertrail' =>
+      'papertrail' => 
       array (
         'driver' => 'monolog',
         'level' => 'debug',
         'handler' => 'Monolog\\Handler\\SyslogUdpHandler',
-        'handler_with' =>
+        'handler_with' => 
         array (
           'host' => NULL,
           'port' => NULL,
         ),
       ),
-      'stderr' =>
+      'stderr' => 
       array (
         'driver' => 'monolog',
         'handler' => 'Monolog\\Handler\\StreamHandler',
         'formatter' => NULL,
-        'with' =>
+        'with' => 
         array (
           'stream' => 'php://stderr',
         ),
       ),
-      'syslog' =>
+      'syslog' => 
       array (
         'driver' => 'syslog',
         'level' => 'debug',
       ),
-      'errorlog' =>
+      'errorlog' => 
       array (
         'driver' => 'errorlog',
         'level' => 'debug',
       ),
     ),
   ),
-  'mail' =>
+  'mail' => 
   array (
     'driver' => 'array',
     'host' => 'smtp.mailtrap.io',
     'port' => '2525',
-    'from' =>
+    'from' => 
     array (
       'address' => 'hello@example.com',
       'name' => 'Example',
@@ -438,33 +438,33 @@
     'username' => NULL,
     'password' => NULL,
     'sendmail' => '/usr/sbin/sendmail -bs',
-    'markdown' =>
+    'markdown' => 
     array (
       'theme' => 'default',
-      'paths' =>
+      'paths' => 
       array (
         0 => '/var/www/resources/views/vendor/mail',
       ),
     ),
     'log_channel' => NULL,
   ),
-  'queue' =>
+  'queue' => 
   array (
     'default' => 'sync',
-    'connections' =>
+    'connections' => 
     array (
-      'sync' =>
+      'sync' => 
       array (
         'driver' => 'sync',
       ),
-      'database' =>
+      'database' => 
       array (
         'driver' => 'database',
         'table' => 'jobs',
         'queue' => 'default',
         'retry_after' => 90,
       ),
-      'beanstalkd' =>
+      'beanstalkd' => 
       array (
         'driver' => 'beanstalkd',
         'host' => 'localhost',
@@ -472,7 +472,7 @@
         'retry_after' => 90,
         'block_for' => 0,
       ),
-      'sqs' =>
+      'sqs' => 
       array (
         'driver' => 'sqs',
         'key' => '',
@@ -481,7 +481,7 @@
         'queue' => 'your-queue-name',
         'region' => 'us-east-1',
       ),
-      'redis' =>
+      'redis' => 
       array (
         'driver' => 'redis',
         'connection' => 'default',
@@ -490,33 +490,33 @@
         'block_for' => NULL,
       ),
     ),
-    'failed' =>
+    'failed' => 
     array (
       'driver' => 'database',
       'database' => 'mysql',
       'table' => 'failed_jobs',
     ),
   ),
-  'services' =>
+  'services' => 
   array (
-    'mailgun' =>
+    'mailgun' => 
     array (
       'domain' => NULL,
       'secret' => NULL,
       'endpoint' => 'api.mailgun.net',
     ),
-    'postmark' =>
+    'postmark' => 
     array (
       'token' => NULL,
     ),
-    'ses' =>
+    'ses' => 
     array (
       'key' => '',
       'secret' => '',
       'region' => 'us-east-1',
     ),
   ),
-  'session' =>
+  'session' => 
   array (
     'driver' => 'array',
     'lifetime' => '120',
@@ -526,7 +526,7 @@
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
-    'lottery' =>
+    'lottery' => 
     array (
       0 => 2,
       1 => 100,
@@ -538,22 +538,22 @@
     'http_only' => true,
     'same_site' => NULL,
   ),
-  'view' =>
+  'view' => 
   array (
-    'paths' =>
+    'paths' => 
     array (
       0 => '/var/www/resources/views',
     ),
     'compiled' => '/var/www/storage/framework/views',
   ),
-  'debug-server' =>
+  'debug-server' => 
   array (
     'host' => 'tcp://127.0.0.1:9912',
   ),
-  'flare' =>
+  'flare' => 
   array (
     'key' => NULL,
-    'reporting' =>
+    'reporting' => 
     array (
       'anonymize_ips' => true,
       'collect_git_information' => true,
@@ -565,13 +565,13 @@
     ),
     'send_logs_as_events' => true,
   ),
-  'ignition' =>
+  'ignition' => 
   array (
     'editor' => 'phpstorm',
     'theme' => 'light',
     'enable_share_button' => true,
     'register_commands' => false,
-    'ignored_solution_providers' =>
+    'ignored_solution_providers' => 
     array (
       0 => 'Facade\\Ignition\\SolutionProviders\\MissingPackageSolutionProvider',
     ),
@@ -580,22 +580,22 @@
     'local_sites_path' => '',
     'housekeeping_endpoint_prefix' => '_ignition',
   ),
-  'trustedproxy' =>
+  'trustedproxy' => 
   array (
     'proxies' => NULL,
     'headers' => 30,
   ),
-  'tinker' =>
+  'tinker' => 
   array (
-    'commands' =>
+    'commands' => 
     array (
     ),
-    'dont_alias' =>
+    'dont_alias' => 
     array (
       0 => 'App\\Nova',
     ),
   ),
-  'ide-helper' =>
+  'ide-helper' => 
   array (
     'filename' => '_ide_helper.php',
     'meta_filename' => '.phpstorm.meta.php',
@@ -606,47 +606,47 @@
     'write_model_relation_count_properties' => true,
     'write_eloquent_model_mixins' => false,
     'include_helpers' => false,
-    'helper_files' =>
+    'helper_files' => 
     array (
       0 => '/var/www/vendor/laravel/framework/src/Illuminate/Support/helpers.php',
     ),
-    'model_locations' =>
+    'model_locations' => 
     array (
       0 => 'app',
     ),
-    'ignored_models' =>
+    'ignored_models' => 
     array (
     ),
-    'extra' =>
+    'extra' => 
     array (
-      'Eloquent' =>
+      'Eloquent' => 
       array (
         0 => 'Illuminate\\Database\\Eloquent\\Builder',
         1 => 'Illuminate\\Database\\Query\\Builder',
       ),
-      'Session' =>
+      'Session' => 
       array (
         0 => 'Illuminate\\Session\\Store',
       ),
     ),
-    'magic' =>
+    'magic' => 
     array (
     ),
-    'interfaces' =>
+    'interfaces' => 
     array (
     ),
-    'custom_db_types' =>
+    'custom_db_types' => 
     array (
     ),
     'model_camel_case_properties' => false,
-    'type_overrides' =>
+    'type_overrides' => 
     array (
       'integer' => 'int',
       'boolean' => 'bool',
     ),
     'include_class_docblocks' => false,
     'force_fqn' => false,
-    'additional_relation_types' =>
+    'additional_relation_types' => 
     array (
     ),
   ),
