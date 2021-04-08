@@ -58,6 +58,11 @@ class Video extends Model
 
     const RATING_LIST = ['L', '10', '12', '14', '16', '18'];
 
+    const THUMB_FILE_MAX_SIZE = 1024 * 5; //5MB
+    const BANNER_FILE_MAX_SIZE = 1024 * 10; //10MB
+    const TRAILER_FILE_MAX_SIZE = 1024 * 1024 * 1; //1GB
+    const VIDEO_FILE_MAX_SIZE = 1024 * 1024 * 50; //50GB
+
     protected $fillable = ['title', 'description', 'year_lauched', 'opened', 'rating', 'duration',
         'video_file', 'thumb_file', 'banner_file', 'trailer_file'];
     protected $dates = ['deleted_at'];

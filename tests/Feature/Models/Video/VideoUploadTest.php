@@ -17,10 +17,10 @@ class VideoUploadTest extends BaseVideoTestCase
         \Storage::fake();
         $video = Video::create(
             $this->sendData + [
-                'video_file' => UploadedFile::fake()->image('video.jpg'),
                 'thumb_file' => UploadedFile::fake()->create('thumb.jpg'),
                 'banner_file' => UploadedFile::fake()->create('banner.jpg'),
-                'trailer_file' => UploadedFile::fake()->create('trailer.jpg')
+                'trailer_file' => UploadedFile::fake()->create('trailer.mp4'),
+                'video_file' => UploadedFile::fake()->image('video.mp4')
             ]
         );
         //dump($video->toArray());
@@ -58,20 +58,20 @@ class VideoUploadTest extends BaseVideoTestCase
     {
         \Storage::fake();
         $video = factory(Video::class)->create();
-        $videoFile = UploadedFile::fake()->create("video.mp4");
         $thumbFile = UploadedFile::fake()->image("thumb.jpg");
         $bannerFile = UploadedFile::fake()->image("banner.jpg");
-        $trailerFile = UploadedFile::fake()->image("trailer.jpg");
+        $trailerFile = UploadedFile::fake()->image("trailer.mp4");
+        $videoFile = UploadedFile::fake()->create("video.mp4");
         $video->update($this->sendData + [
-                'video_file' => $videoFile,
                 'thumb_file' => $thumbFile,
                 'banner_file' => $bannerFile,
-                'trailer_file' => $trailerFile
+                'trailer_file' => $trailerFile,
+                'video_file' => $videoFile,
             ]);
-        \Storage::assertExists("{$video->id}/{$video->video_file}");
         \Storage::assertExists("{$video->id}/{$video->thumb_file}");
         \Storage::assertExists("{$video->id}/{$video->banner_file}");
         \Storage::assertExists("{$video->id}/{$video->trailer_file}");
+        \Storage::assertExists("{$video->id}/{$video->video_file}");
 
         $newVideoFile = UploadedFile::fake()->image("video.mp4");
         $video->update($this->sendData + [
@@ -96,10 +96,10 @@ class VideoUploadTest extends BaseVideoTestCase
         try {
             $video->update(
                 $this->sendData + [
-                    'video_file' => UploadedFile::fake()->create('video.mp4'),
                     'thumb_file' => UploadedFile::fake()->image('thumb.jpg'),
                     'banner_file' => UploadedFile::fake()->image('banner.jpg'),
-                    'trailer_file' => UploadedFile::fake()->image('trailer.jpg')
+                    'trailer_file' => UploadedFile::fake()->image('trailer.jpg'),
+                    'video_file' => UploadedFile::fake()->create('video.mp4'),
                 ]
             );
         } catch (TestException $exception) {
