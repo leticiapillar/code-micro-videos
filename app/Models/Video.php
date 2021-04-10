@@ -51,6 +51,14 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereVideoFile($value)
  * @property string|null $thumb_file
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereThumbFile($value)
+ * @property string|null $banner_file
+ * @property string|null $trailer_file
+ * @property-read mixed $banner_file_url
+ * @property-read mixed $thumb_file_url
+ * @property-read mixed $trailer_file_url
+ * @property-read mixed $video_file_url
+ * @method static \Illuminate\Database\Eloquent\Builder|Video whereBannerFile($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Video whereTrailerFile($value)
  */
 class Video extends Model
 {
