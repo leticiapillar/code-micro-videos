@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\CastMemberResource;
 use App\Models\CastMember;
 
 class CastMemberController extends BasicCrudController
 {
+
     private $rules;
 
     public function __construct()
@@ -26,6 +28,7 @@ class CastMemberController extends BasicCrudController
     {
         return $this->rules;
     }
+
     public function rulesUpdate()
     {
         return $this->rules;
@@ -33,11 +36,11 @@ class CastMemberController extends BasicCrudController
 
     protected function resourceCollection()
     {
-        // TODO: Implement resourceCollection() method.
+        return $this->resource();
     }
 
     protected function resource()
     {
-        // TODO: Implement resource() method.
+        return CastMemberResource::class;
     }
 }
