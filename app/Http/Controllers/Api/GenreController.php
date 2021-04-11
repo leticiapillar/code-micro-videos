@@ -56,8 +56,19 @@ class GenreController extends BasicCrudController
     {
         return $this->rules;
     }
+
     public function rulesUpdate()
     {
         return $this->rules;
+    }
+
+    protected function resourceCollection()
+    {
+        // TODO: Implement resourceCollection() method.
+    }
+
+    protected function resource()
+    {
+        // TODO: Implement resource() method.
     }
 }

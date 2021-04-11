@@ -13,6 +13,7 @@ use Tests\TestCase;
 class BasicCrudControllerTest extends TestCase
 {
     private $controller;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -27,12 +28,16 @@ class BasicCrudControllerTest extends TestCase
         parent::tearDown();
     }
 
+
     public function testIndex()
     {
         /** @var CategoryStub $category */
         $category = CategoryStub::create(['name' => 'test name', 'description' => 'test description']);
-        $result = $this->controller->index()->toArray();
-        $this->assertEquals([$category->toArray()], $result);
+        $result = $this->controller->index()[0]->get()->toArray();
+        $this->assertEquals(
+            [$category->toArray()],
+            $result
+        );
     }
 
     public function testInvalidationDataInStore()
@@ -57,7 +62,7 @@ class BasicCrudControllerTest extends TestCase
         $obj = $this->controller->store($request);
         $this->assertEquals(
             CategoryStub::find(1)->toArray(),
-            $obj->toArray()
+            $obj->get()->toArray()[0]
         );
     }
 
@@ -88,7 +93,10 @@ class BasicCrudControllerTest extends TestCase
     {
         $category = CategoryStub::create(['name' => 'test name', 'description' => 'test description']);
         $result = $this->controller->show($category->id);
-        $this->assertEquals(CategoryStub::find(1)->toArray(), $result->toArray());
+        $this->assertEquals(
+            CategoryStub::find(1)->toArray(),
+            $result->get()->toArray()[0]
+        );
     }
 
     public function testUpdate()
@@ -100,7 +108,10 @@ class BasicCrudControllerTest extends TestCase
             ->once()
             ->andReturn(['name' => 'test name', 'description' => 'test description']);
         $result = $this->controller->update($request, $category->id);
-        $this->assertEquals(CategoryStub::find(1)->toArray(), $result->toArray());
+        $this->assertEquals(
+            CategoryStub::find(1)->toArray(),
+            $result->get()->toArray()[0]
+        );
     }
 
     public function testDestroy()

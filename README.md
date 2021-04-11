@@ -316,6 +316,17 @@ $ php artisan tinker
 ```
 
 
+### Laravel: Conhecendo o API Resource
+- Documentação: [Eloquent: API Resources](https://laravel.com/docs/6.x/eloquent-resources)
+- Recurso para a serializacção e transformação dos modelos em Json
+- Cria as classes resources em `App\Http\Resources`
+```bash
+$ docker exec -it micro-videos-app bash
+# Cria o resource para Category
+$ php artisan make:resource CategoryResource
+```
+
+
 ### Observações
 - Ao executar os testes unitário apareceu o erro abaixo:
 ```bash

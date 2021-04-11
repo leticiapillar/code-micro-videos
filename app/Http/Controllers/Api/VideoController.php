@@ -25,10 +25,10 @@ class VideoController extends BasicCrudController
                 'array',
                 'exists:genres,id,deleted_at,NULL'
             ],
-            'thumb_file' => 'image|max:'.Video::THUMB_FILE_MAX_SIZE, //5MB
-            'banner_file' => 'image|max:'.Video::BANNER_FILE_MAX_SIZE, //10MB
-            'trailer_file' => 'mimetypes:video/mp4|max:'.Video::TRAILER_FILE_MAX_SIZE, //1GB
-            'video_file' => 'mimetypes:video/mp4|max:'.Video::VIDEO_FILE_MAX_SIZE, //50GB
+            'thumb_file' => 'image|max:' . Video::THUMB_FILE_MAX_SIZE, //5MB
+            'banner_file' => 'image|max:' . Video::BANNER_FILE_MAX_SIZE, //10MB
+            'trailer_file' => 'mimetypes:video/mp4|max:' . Video::TRAILER_FILE_MAX_SIZE, //1GB
+            'video_file' => 'mimetypes:video/mp4|max:' . Video::VIDEO_FILE_MAX_SIZE, //50GB
         ];
     }
 
@@ -73,5 +73,15 @@ class VideoController extends BasicCrudController
     public function rulesUpdate()
     {
         return $this->rules;
+    }
+
+    protected function resourceCollection()
+    {
+        // TODO: Implement resourceCollection() method.
+    }
+
+    protected function resource()
+    {
+        // TODO: Implement resource() method.
     }
 }
