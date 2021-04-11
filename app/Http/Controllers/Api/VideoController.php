@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\VideoGenreResource;
+use App\Http\Resources\VideoResource;
 use App\Models\Video;
 use App\Rules\GenresHasCategoriesRule;
 use Illuminate\Http\Request;
@@ -77,11 +79,11 @@ class VideoController extends BasicCrudController
 
     protected function resourceCollection()
     {
-        // TODO: Implement resourceCollection() method.
+        return $this->resource();
     }
 
     protected function resource()
     {
-        // TODO: Implement resource() method.
+        return VideoResource::class;
     }
 }

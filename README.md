@@ -324,12 +324,12 @@ $ php artisan tinker
 $ docker exec -it micro-videos-app bash
 # Cria o resource para Category
 $ php artisan make:resource CategoryResource
-
+# Cria o resource para CastMember
 $ php artisan make:resource CastMemberResource
+# Cria o resource para Genre
 $ php artisan make:resource GenreResource
-$ php artisan make:resource VideoGenreResource
-
-
+# Cria o resource para Video
+$ php artisan make:resource VideoResource
 ```
 
 
