@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\GenreController;
+use App\Http\Resources\GenreResource;
 use App\Models\Category;
 use App\Models\Genre;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -10,16 +11,21 @@ use Illuminate\Http\Request as HttpRequest;
 use Tests\Exceptions\TestException;
 use Tests\TestCase;
 use Tests\Traits\TestDatabase;
+use Tests\Traits\TestResources;
 use Tests\Traits\TestSaves;
 use Tests\Traits\TestValidations;
 
 class GenreControllerTest extends TestCase
 {
 
-    use DatabaseMigrations, TestValidations, TestSaves, TestDatabase;
+    use DatabaseMigrations, TestValidations, TestSaves, TestDatabase, TestResources;
 
     private $genre;
     private $sendData;
+    private $serializedFields = [
+        'id', 'name', 'is_active',
+        'created_at', 'updated_at', 'deleted_at'
+    ];
 
     protected function setUp(): void
     {
@@ -36,7 +42,19 @@ class GenreControllerTest extends TestCase
 
         $response
             ->assertStatus(200)
-            ->assertJson([$this->genre->toArray()]);
+            ->assertJson([
+                'meta' => ['per_page' => 15]
+            ])
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => $this->serializedFields
+                ],
+                'links' => [],
+                'meta' => [],
+            ]);
+
+        $resource = GenreResource::collection(collect([$this->genre]));
+        $this->assertResource($response, $resource);
     }
 
     public function testShow()
@@ -45,7 +63,11 @@ class GenreControllerTest extends TestCase
 
         $response
             ->assertStatus(200)
-            ->assertJson($this->genre->toArray());
+            ->assertJsonStructure(['data' => $this->serializedFields]);
+
+        $id = $response->json('data.id');
+        $resource = new GenreResource(Genre::find($id));
+        $this->assertResource($response, $resource);
     }
 
     public function testInvalidationData()
@@ -213,7 +235,7 @@ class GenreControllerTest extends TestCase
         $response = $this->get(route('genres.show', ['genre' => $this->genre->id]));
         $response
             ->assertStatus(200)
-            ->assertJson($this->genre->toArray());
+            ->assertJsonStructure(['data' => $this->serializedFields]);
 
         $response = $this->delete(route('genres.destroy', ['genre' => $this->genre->id]));
         $response->assertStatus(204);
