@@ -23,7 +23,7 @@ class GenreControllerTest extends TestCase
     private $genre;
     private $sendData;
     private $serializedFields = [
-        'id', 'name', 'is_active',
+        'id', 'name', 'is_active', 'categories',
         'created_at', 'updated_at', 'deleted_at'
     ];
 
@@ -147,15 +147,22 @@ class GenreControllerTest extends TestCase
                 $value['send_data'],
                 $value['test_data'] + ['deleted_at' => null]
             );
-            $response->assertJsonStructure(['created_at', 'updated_at']);
-            $this->assertHasCategory($response->json('id'), $categoryId);
+            $response->assertJsonStructure(['data' => $this->serializedFields]);
+            $id = $response->json('data.id');
+            $this->assertHasCategory($id, $categoryId);
+            $resource = new GenreResource(Genre::find($id));
+            $this->assertResource($response, $resource);
 
             $response = $this->assertUpdate(
                 $value['send_data'],
                 $value['test_data'] + ['deleted_at' => null]
             );
-            $response->assertJsonStructure(['created_at', 'updated_at']);
-            $this->assertHasCategory($response->json('id'), $categoryId);
+            $response->assertJsonStructure(['data' => $this->serializedFields]);
+            $id = $response->json('data.id');
+            $this->assertHasCategory($id, $categoryId);
+            $resource = new GenreResource(Genre::find($id));
+            $this->assertResource($response, $resource);
+
         }
     }
 
