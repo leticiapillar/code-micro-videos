@@ -51,6 +51,14 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereVideoFile($value)
  * @property string|null $thumb_file
  * @method static \Illuminate\Database\Eloquent\Builder|Video whereThumbFile($value)
+ * @property string|null $banner_file
+ * @property string|null $trailer_file
+ * @property-read mixed $banner_file_url
+ * @property-read mixed $thumb_file_url
+ * @property-read mixed $trailer_file_url
+ * @property-read mixed $video_file_url
+ * @method static \Illuminate\Database\Eloquent\Builder|Video whereBannerFile($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Video whereTrailerFile($value)
  */
 class Video extends Model
 {
@@ -144,5 +152,25 @@ class Video extends Model
     protected function uploadDir()
     {
         return $this->id;
+    }
+
+    public function getThumbFileUrlAttribute()
+    {
+        return $this->thumb_file ? $this->getFileUrl($this->thumb_file) : null;
+    }
+
+    public function getBannerFileUrlAttribute()
+    {
+        return $this->banner_file ? $this->getFileUrl($this->banner_file) : null;
+    }
+
+    public function getTrailerFileUrlAttribute()
+    {
+        return $this->trailer_file ? $this->getFileUrl($this->trailer_file) : null;
+    }
+
+    public function getVideoFileUrlAttribute()
+    {
+        return $this->video_file ? $this->getFileUrl($this->video_file) : null;
     }
 }

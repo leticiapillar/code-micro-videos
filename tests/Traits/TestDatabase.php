@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Traits;
 
+use Illuminate\Foundation\Testing\TestResponse;
+
 trait TestDatabase
 {
 
@@ -22,7 +24,7 @@ trait TestDatabase
         $response = $this->json('POST', $this->routeStore(), $data);
         $this->assertDatabaseHas($tableName, [
             $fieldName => $fieldValue,
-            $fieldNameRespoinseId => $response->json('id')
+            $fieldNameRespoinseId => $this->getIdFromResponseDatabase($response)
         ]);
     }
 
@@ -35,7 +37,7 @@ trait TestDatabase
         $response = $this->json('PUT', $this->routeUpdate(), $data);
         $this->assertDatabaseHas($tableName, [
             $fieldName => $fieldValue,
-            $fieldNameRespoinseId => $response->json('id')
+            $fieldNameRespoinseId => $this->getIdFromResponseDatabase($response)
         ]);
     }
 
@@ -48,8 +50,13 @@ trait TestDatabase
         $response = $this->json('PUT', $this->routeUpdate(), $data);
         $this->assertDatabaseMissing($tableName, [
             $fieldName => $fieldValue,
-            $fieldNameRespoinseId => $response->json('id')
+            $fieldNameRespoinseId => $this->getIdFromResponseDatabase($response)
         ]);
+    }
+
+    private function getIdFromResponseDatabase(TestResponse $response)
+    {
+        return $response->json('id') ?? $response->json('data.id');
     }
 
 }

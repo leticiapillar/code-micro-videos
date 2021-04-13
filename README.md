@@ -300,6 +300,39 @@ $ gcloud kms decrypt \
     --ciphertext-file ./storage/credentials/google/service-account-storage.json.enc
 ```
 
+
+### Como acessar os arquivos de upload local
+- Criar um link simbólico para a pasta storage/app/public
+```bash
+$ docker exec -it micro-videos-app bash
+$ php artisan storage:link
+$ ls -la public/storage/videos/
+$ php artisan tinker
+>>> $video = \App\Models\Video::first();
+>>> $video->video_file_url
+=> "http://localhost:8000/storage/videos/00b1dd8f-0e5f-453f-a104-666f6cb23ac5/qzfB0vL4SlwpqXs7bXtn56PnyrQDmXwz66kM7kDA.gif"
+>>> $video->thumb_file_url
+=> "http://localhost:8000/storage/videos/00b1dd8f-0e5f-453f-a104-666f6cb23ac5/Gzk80ZgO1nSYDDFGD4QS31lJzoKDeSfP5tFB9i1v.jpg"
+```
+
+
+### Laravel: Conhecendo o API Resource
+- Documentação: [Eloquent: API Resources](https://laravel.com/docs/6.x/eloquent-resources)
+- Recurso para a serializacção e transformação dos modelos em Json
+- Cria as classes resources em `App\Http\Resources`
+```bash
+$ docker exec -it micro-videos-app bash
+# Cria o resource para Category
+$ php artisan make:resource CategoryResource
+# Cria o resource para CastMember
+$ php artisan make:resource CastMemberResource
+# Cria o resource para Genre
+$ php artisan make:resource GenreResource
+# Cria o resource para Video
+$ php artisan make:resource VideoResource
+```
+
+
 ### Observações
 - Ao executar os testes unitário apareceu o erro abaixo:
 ```bash

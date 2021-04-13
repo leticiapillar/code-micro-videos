@@ -10,7 +10,9 @@ trait TestSaves
 {
 
     protected abstract function model();
+
     protected abstract function routeStore();
+
     protected abstract function routeUpdate();
 
     protected function assertStore(array $sendData, array $testData, array $testJsonData = null): TestResponse
@@ -41,12 +43,17 @@ trait TestSaves
     {
         $model = $this->model();
         $table = (new $model)->getTable();
-        $this->assertDatabaseHas($table, $testData + ['id' => $response->json('id')]);
+        $this->assertDatabaseHas($table, $testData + ['id' => $this->getIdFromResponse($response)]);
     }
 
     private function assertJsonResponseContent(TestResponse $response, array $testData, $testJsonData = null)
     {
         $testResponse = $testJsonData ?? $testData;
-        $response->assertJsonFragment($testResponse + ['id' => $response->json('id')]);
+        $response->assertJsonFragment($testResponse + ['id' => $this->getIdFromResponse($response)]);
+    }
+
+    private function getIdFromResponse(TestResponse $response)
+    {
+        return $response->json('id') ?? $response->json('data.id');
     }
 }
