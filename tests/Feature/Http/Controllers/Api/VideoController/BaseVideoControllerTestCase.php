@@ -18,6 +18,8 @@ abstract class BaseVideoControllerTestCase extends TestCase
     protected $sendData;
     protected $serializedFields = [
         'id', 'title', 'description', 'year_lauched', 'rating', 'duration',
+        'thumb_file_url', 'banner_file_url', 'trailer_file_url', 'video_file_url',
+        'categories', 'genres',
         'created_at', 'updated_at', 'deleted_at'
     ];
 
